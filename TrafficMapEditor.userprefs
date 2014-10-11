@@ -1,0 +1,14 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Script/DragableObject.cs">
+    <Files>
+      <File FileName="Assets/Script/Main.cs" Line="12" Column="1" />
+      <File FileName="Assets/Script/DragableObject.cs" Line="9" Column="2" />
+      <File FileName="Assets/Script/Handler/GridHandler.cs" Line="6" Column="28" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
