@@ -8,8 +8,5 @@ public class ToolbarHandler : MonoBehaviour {
 		Instance = this;
 	}
 
-	public void OnNewLayer () {
-		Main.Instance.NewLayer ();
-	}
 
 }

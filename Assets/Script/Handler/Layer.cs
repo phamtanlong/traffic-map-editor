@@ -26,8 +26,14 @@ public class Layer : MonoBehaviour {
 		lblName.text = param.name;
 	}
 
-	public void OnSelect (bool s) {
-		sprSelect.gameObject.SetActive (s);
-		ExplorerHandler.Instance.selectedLayer = this;
+	bool isSelected = false;
+	public void OnClick () {
+		isSelected = ! isSelected;
+		Select (isSelected);
+		ExplorerHandler.Instance.SetSelectedLayer (this);
+	}
+	public void Select (bool istrue) {
+		isSelected = istrue;
+		sprSelect.gameObject.SetActive (isSelected);
 	}
 }
