@@ -1,19 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Main : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-//		for (int i = 0; i <= 10; ++i) {
-//			float d = i / 10.0f;
-//			float v = -5 + d;
-//			Debug.Log (v + " => " + Mathf.RoundToInt (v));
-//		}
+	public static Main Instance;
+
+	public static List<Layer> listLayer = new List<Layer> ();
+
+	void Awake () {
+		Instance = this;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void NewLayer () {
+		int id = Ultil.GetNewLayerId ();
+		string name = "layer " + id;
+
+		Layer.Param p = new Layer.Param ();
+		p.name = name;
+		p.id = id;
+
+		Layer l = ExplorerHandler.Instance.NewLayer (p);
+		listLayer.Add (l);
 	}
 }
