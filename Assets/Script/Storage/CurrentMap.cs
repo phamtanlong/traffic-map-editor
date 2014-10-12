@@ -3,25 +3,15 @@ using System.Collections;
 
 public class CurrentMap {
 
-	private CurrentMap _instance = null;
+	private static Map _instance = null;
 
-	public CurrentMap Instance {
+	public static Map Instance {
 		get {
 			if (_instance == null) {
-				_instance = new CurrentMap ();
+				_instance = new Map ();
 			}
 
 			return _instance;
 		}
-	}
-
-	public string name;
-	public int width;
-	public int height;
-
-	private CurrentMap () {
-		name = "";
-		width = 0;
-		height = 0;
 	}
 }

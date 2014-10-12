@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GridHandler : MonoBehaviour {
 
@@ -17,5 +18,9 @@ public class GridHandler : MonoBehaviour {
 		} else {
 			this.GetComponent<BoxCollider>().enabled = false;
 		}
+	}
+
+	public void OnPress () {
+
 	}
 }

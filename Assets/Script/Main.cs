@@ -5,22 +5,31 @@ using System.Collections.Generic;
 public class Main : MonoBehaviour {
 
 	public static Main Instance;
+	public UILabel log;
 
-	public static List<Layer> listLayer = new List<Layer> ();
+	public static List<LayerHandler> listLayer = new List<LayerHandler> ();
 
 	void Awake () {
 		Instance = this;
 	}
 
-	public void NewLayer () {
-		int id = Ultil.GetNewLayerId ();
-		string name = "layer " + id;
+	public void NewMap () {
+		DrawPanelHandler.Instance.Reset (CurrentMap.Instance.width, CurrentMap.Instance.height);
+	}
 
-		Layer.Param p = new Layer.Param ();
-		p.name = name;
-		p.id = id;
+	public void EditMap () {
+		DrawPanelHandler.Instance.SetSize (CurrentMap.Instance.width, CurrentMap.Instance.height);
+	}
 
-		Layer l = ExplorerHandler.Instance.NewLayer (p);
+	public void NewLayer (LayerHandler l) {
 		listLayer.Add (l);
+
+		DrawPanelHandler.Instance.NewLayer (l.layer.id);
+	}
+
+	public void RemoveLayer (LayerHandler selectedLayer) {
+		listLayer.Remove (selectedLayer);
+
+		DrawPanelHandler.Instance.RemoveLayer (selectedLayer.layer.id);
 	}
 }
