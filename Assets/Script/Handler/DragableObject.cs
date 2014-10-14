@@ -86,26 +86,4 @@ public class DragableObject : MonoBehaviour {
 		Vector3 newpos= UICamera.current.camera.ScreenToWorldPoint(new Vector3(vec.x,vec.y,0));
 		transform.position = new Vector3 (newpos.x-offset.x, newpos.y-offset.y, newpos.z);
 	}
-
-//	void OnTriggerEnter(Collider other) {
-//		if (other.gameObject.name == "btnDelete") {
-//			if (isDeleted == false)
-//			{
-//				isDeleted = true;
-//				originColorDelete = gameObject.GetComponent<MeshRenderer>().materials[0].mainTexture;
-//				//change color here
-//			}
-//		}
-//	}
-//
-//	void OnTriggerExit(Collider other) {
-//		if (other.gameObject.name == "btnDelete") {
-//			if (isDeleted == true)
-//			{
-//				isDeleted = false;
-//				gameObject.GetComponent<MeshRenderer>().materials[0].mainTexture = originColorDelete;
-//			}
-//		}
-//	}
-
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ExplorerHandler : MonoBehaviour {
 
@@ -8,25 +9,29 @@ public class ExplorerHandler : MonoBehaviour {
 		Instance = this;
 	}
 
+	void Start () {
+		OnNewLayer ();
+	}
+	
+	public static List<LayerHandler> listLayer = new List<LayerHandler> ();
+
 	public bool isShow = true;
 	public GameObject fullObj;
 	public UIScrollView scrollView;
 	public UIGrid parent;
 
-	private LayerHandler selectedLayer;
-	public LayerHandler GetSelectedLayer () {
-		return selectedLayer;
-	}
 	public void SetSelectedLayer (LayerHandler l) {
-		for (int i = 0; i < Main.listLayer.Count; ++i) {
-			Main.listLayer[i].Select (false);
+		for (int i = 0; i < listLayer.Count; ++i) {
+			listLayer[i].Select (false);
 		}
 
-		selectedLayer = l;
+		CurrentLayer.Instance = l;
 
-		if (selectedLayer != null) {
-			selectedLayer.Select (true);
+		if (CurrentLayer.Instance != null) {
+			CurrentLayer.Instance.Select (true);
 		}
+
+		Main.Instance.SetSelectedLayer ();
 	}
 
 	public GameObject prefabLayer;
@@ -58,18 +63,23 @@ public class ExplorerHandler : MonoBehaviour {
 		SetSelectedLayer (l);
 
 		//
+		listLayer.Add (l);
 		Main.Instance.NewLayer (l);
 	}
 
 	public void OnRemoveLayer () {
-		if (selectedLayer != null) {
+		if (CurrentLayer.Instance != null) {
 
-			Main.Instance.RemoveLayer (selectedLayer);
+			LayerHandler l = CurrentLayer.Instance;
 			
-			parent.RemoveChild (selectedLayer.transform);
-			GameObject.Destroy (selectedLayer.gameObject);
-			if (Main.listLayer.Count > 0) {
-				SetSelectedLayer (Main.listLayer[Main.listLayer.Count-1]);
+			listLayer.Remove (l);
+			Main.Instance.RemoveLayer (l);
+
+			parent.RemoveChild (l.transform);
+			GameObject.Destroy (l.gameObject);
+
+			if (listLayer.Count > 0) {
+				SetSelectedLayer (listLayer[listLayer.Count-1]);
 			} else {
 				SetSelectedLayer (null);
 			}
