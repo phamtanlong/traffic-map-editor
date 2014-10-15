@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class TileHandler : MonoBehaviour {
-
-	[HideInInspector]
 	public Tile tile;
 
 	public UISprite sprSelect;
@@ -17,7 +15,7 @@ public class TileHandler : MonoBehaviour {
 	public void Setup (Tile tile) {
 		this.tile = tile;
 
-		lblId.text = ""+tile.id;
+		lblId.text = ""+tile.typeId;
 	}
 
 	public void OnClick () {

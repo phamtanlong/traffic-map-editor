@@ -20,6 +20,8 @@ public class GridTileHandler : MonoBehaviour {
 
 	public void Init (TileHandler ins) {
 
+		this.tile = ins.tile.Copy ();
+
 		//edit
 		ins.gameObject.layer = 9;
 		
@@ -35,6 +37,7 @@ public class GridTileHandler : MonoBehaviour {
 		Destroy (ins.GetComponent<UIPlaySound>());
 		Destroy (ins.GetComponent<UIDragScrollView>());
 		Destroy (ins.GetComponent<TweenColor>());
+		Destroy (ins.GetComponent<TileHandler>());
 		
 		foreach (Transform c in ins.transform) {
 			GameObject.Destroy(c.gameObject);

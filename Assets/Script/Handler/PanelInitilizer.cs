@@ -21,7 +21,7 @@ public class PanelInitilizer : MonoBehaviour {
 
 			TileHandler handler = go.GetComponent<TileHandler>();
 			Tile tile = new Tile ();
-			tile.id = int.Parse (t.name);
+			tile.typeId = int.Parse (t.name);
 			handler.Setup (tile);
 			
 			grid.AddChild (go);

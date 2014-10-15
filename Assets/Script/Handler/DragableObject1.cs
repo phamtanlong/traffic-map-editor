@@ -4,7 +4,7 @@ using System;
 
 public class DragableObject1 : MonoBehaviour {
 
-	public Vector2 step=Vector2.one;
+	public static Vector2 step = new Vector2 (16,16) ;//Vector2.one;
 	public KeyCode keyToDisable=KeyCode.Space;
 
 	private bool isDeleted = false;
