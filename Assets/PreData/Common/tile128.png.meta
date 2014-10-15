@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 2ae509db41aad4ef9a026d07f5ce9c36
+guid: 30e0af9462e2b4677b16604833bd0f1b
 TextureImporter:
   fileIDToRecycleName:
-    21300000: tile_16
+    21300000: tile128
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -18,11 +18,11 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: .25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -3
+  textureFormat: 5
   maxTextureSize: 1024
   textureSettings:
     filterMode: -1
@@ -39,7 +39,7 @@ TextureImporter:
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   textureType: 2
   buildTargetSettings: []
   spriteSheet:
