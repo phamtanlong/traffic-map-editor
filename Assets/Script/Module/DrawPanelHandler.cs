@@ -6,27 +6,34 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	public static DrawPanelHandler Instance;
 
+	public GridTileHandler SelectedGridTile = null;
+
 	public KeyCode keyToDrag = KeyCode.Space;
 	public KeyCode keyToDelete = KeyCode.E;
 
 	public UISprite grid;
+	public UISprite grid32;
+	public UISprite grid16;
+	public UISprite grid8;
 	public GameObject prefabGridLayer;
 	public float scaleSpeed;
 	public float minScale;
 	public float maxScale;
 
 	[HideInInspector]
-	public Dictionary<int,Dictionary<Vector2,TileHandler>> dictTile; //layerId,position,tile
+	public Dictionary<int, Dictionary<Vector2, GridTileHandler>> dictTile; //layerId,position,tile
 	[HideInInspector]
-	public Dictionary<int,GameObject> dictLayers = new Dictionary<int,GameObject> ();
+	public Dictionary<int, GameObject> dictLayers = new Dictionary<int, GameObject> ();
 
 	void Awake () {
 		Instance = this;
 	}
 
 	void Start () {
-		SetSize (CurrentMap.Instance.width, CurrentMap.Instance.height);
-		dictTile = new Dictionary<int, Dictionary<Vector2, TileHandler>> ();
+		SetSize (Global.currentMap.width, Global.currentMap.height);
+		dictTile = new Dictionary<int, Dictionary<Vector2, GridTileHandler>> ();
+		grid16.gameObject.SetActive (false);
+		grid8.gameObject.SetActive (false);
 	}
 
 	public void SetSize (int w, int h) {
@@ -71,7 +78,7 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	public void SelectLayer () {
 		foreach (GameObject go in dictLayers.Values) {
-			if (go.name == ""+CurrentLayer.Instance.layer.id) {
+			if (go.name == ""+Global.currentLayer.id) {
 				UISprite wi = go.GetComponent<UISprite>();
 				wi.color = Color.white;
 			} else {
@@ -88,19 +95,37 @@ public class DrawPanelHandler : MonoBehaviour {
 		s.x = s.x + delta * scaleSpeed;
 		s.y = s.y + delta * scaleSpeed;
 
-		if (s.x >= minScale && s.x <= maxScale) {
+		if (s.x >= 0.2f && s.x <= 12.0f) {
 			grid.transform.localScale = s;
+
+			if (s.x < 4.0f) {
+				grid32.gameObject.SetActive (true);
+				grid16.gameObject.SetActive (false);
+				grid8.gameObject.SetActive (false);
+
+			} else if (s.x < 8.0f) {
+				grid32.gameObject.SetActive (false);
+				grid16.gameObject.SetActive (true);
+				grid8.gameObject.SetActive (false);
+
+				grid16.width = grid.width * 2;
+				grid16.height = grid.height * 2;
+			} else {
+				grid32.gameObject.SetActive (false);
+				grid16.gameObject.SetActive (false);
+				grid8.gameObject.SetActive (true);
+				
+				grid8.width = grid.width * 4;
+				grid8.height = grid.height * 4;
+			}
 		}
 	}
 
-	void OnPress (bool isPress) {
-		if (isPress == false) { //keyUp
-			PressToDraw ();
-		}
+	void OnClick () {
+		PressToDraw ();
 	}
 	
 	void OnDrag (Vector2 v) {
-		
 		bool isDrag = Input.GetKey (keyToDrag);
 		bool isDelete = Input.GetKey (keyToDelete);
 		
@@ -141,19 +166,19 @@ public class DrawPanelHandler : MonoBehaviour {
 		GameObject.Destroy (t.gameObject);
 		yield return new WaitForEndOfFrame();
 	}
-	
+
 	void EraseAt (Vector2 pos) {
 		int dx = Mathf.RoundToInt (pos.x / 32);
 		int dy = Mathf.RoundToInt (pos.y / 32);
 		pos.x = 32 * dx;
 		pos.y = 32 * dy;
 		
-		if (CurrentLayer.Instance != null) {
-			Dictionary<Vector2,TileHandler> d = null;
-			dictTile.TryGetValue (CurrentLayer.Instance.layer.id, out d);
+		if (Global.currentLayer != null) {
+			Dictionary<Vector2, GridTileHandler> d = null;
+			dictTile.TryGetValue (Global.currentLayer.id, out d);
 			
 			if (d != null) {
-				TileHandler t = null;
+				GridTileHandler t = null;
 				d.TryGetValue (pos, out t);
 				if (t != null) {
 					t.gameObject.SetActive (false);
@@ -165,7 +190,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			//Delete by ChildName
 			DrawPanelHandler draw = GetComponent<DrawPanelHandler>();
 			GameObject layer = null;
-			draw.dictLayers.TryGetValue (CurrentLayer.Instance.layer.id, out layer);
+			draw.dictLayers.TryGetValue (Global.currentLayer.id, out layer);
 			if (layer != null) {
 				Transform trans = layer.transform.FindChild (pos.x+","+pos.y);
 				if (trans != null) {
@@ -181,47 +206,44 @@ public class DrawPanelHandler : MonoBehaviour {
 		pos.x = 32 * dx;
 		pos.y = 32 * dy;
 		
-		if (CurrentTile.Instance != null && CurrentLayer.Instance != null) {
+		if (Global.currentTile != null && Global.currentLayer != null) {
 			
-			Dictionary<Vector2,TileHandler> d = null;
-			dictTile.TryGetValue (CurrentLayer.Instance.layer.id, out d);
+			Dictionary<Vector2, GridTileHandler> d = null;
+			dictTile.TryGetValue (Global.currentLayer.id, out d);
 			
 			if (d == null) {
-				d = new Dictionary<Vector2, TileHandler> ();
-				dictTile[CurrentLayer.Instance.layer.id] = d;
+				d = new Dictionary<Vector2, GridTileHandler> ();
+				dictTile[Global.currentLayer.id] = d;
 			}
 			
-			TileHandler ins = GameObject.Instantiate (CurrentTile.Instance) as TileHandler;
-			ins.name = pos.x + "," + pos.y;
-			ins.gameObject.layer = 9;
-			
-			Destroy (ins.GetComponent<BoxCollider>());
-			Destroy (ins.GetComponent<UIButton>());
-			Destroy (ins.GetComponent<UIPlaySound>());
-			Destroy (ins.GetComponent<UIDragScrollView>());
-			Destroy (ins.GetComponent<TweenColor>());
-			
-			foreach (Transform c in ins.transform) {
-				GameObject.Destroy(c.gameObject);
-			}
-			
-			ins.GetComponent<UITexture>().color = Color.white;
-			
-			GameObject l = gameObject.GetComponent<DrawPanelHandler>().dictLayers[CurrentLayer.Instance.layer.id];
-			
+			TileHandler ins = GameObject.Instantiate (ToolboxHandler.Instance.SelectedTile) as TileHandler;
+			ins.gameObject.AddComponent (typeof (GridTileHandler));
+
+			GridTileHandler gt = ins.GetComponent<GridTileHandler>();
+			gt.Init (ins);
+
+			//--------------------------------------------------
+			gt.name = pos.x + "," + pos.y;
+			gt.gameObject.AddComponent (typeof (EventTransfer));
+			gt.gameObject.GetComponent <EventTransfer>().onScroll = this.OnScroll;
+			gt.gameObject.GetComponent <EventTransfer>().onPress = this.GetComponent<DragableObject>().OnPress;
+			gt.gameObject.GetComponent <EventTransfer>().onDrag = this.GetComponent<DragableObject>().OnDrag;
+
+			GameObject l = gameObject.GetComponent<DrawPanelHandler>().dictLayers[Global.currentLayer.id];
+
+			//--------------------------------------------------
 			//delete obj at this position
 			Transform trans = l.transform.FindChild (pos.x+","+pos.y);
 			if (trans != null) {
 				AddToDelete (trans.gameObject);
 			}
-			//////////////////////////////
-
-			ins.transform.parent = l.transform;
-			ins.transform.localPosition = pos;
-			ins.transform.localScale = Vector2.one;
+			//--------------------------------------------------
 			
-			dictTile[CurrentLayer.Instance.layer.id][pos] = ins;
+			gt.transform.parent = l.transform;
+			gt.transform.localPosition = pos;
+			gt.transform.localScale = Vector2.one;
 
+			dictTile[Global.currentLayer.id][pos] = gt;
 		}
 	}
 

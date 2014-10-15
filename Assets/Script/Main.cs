@@ -12,11 +12,11 @@ public class Main : MonoBehaviour {
 	}
 
 	public void NewMap () {
-		DrawPanelHandler.Instance.Reset (CurrentMap.Instance.width, CurrentMap.Instance.height);
+		DrawPanelHandler.Instance.Reset (Global.currentMap.width, Global.currentMap.height);
 	}
 
 	public void EditMap () {
-		DrawPanelHandler.Instance.SetSize (CurrentMap.Instance.width, CurrentMap.Instance.height);
+		DrawPanelHandler.Instance.SetSize (Global.currentMap.width, Global.currentMap.height);
 	}
 
 	public void NewLayer (LayerHandler l) {

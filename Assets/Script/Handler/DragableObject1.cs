@@ -2,13 +2,11 @@
 using System.Collections;
 using System;
 
-public class DragableObject : MonoBehaviour {
+public class DragableObject1 : MonoBehaviour {
 
 	public Vector2 step=Vector2.one;
-	public KeyCode keyToDrag=KeyCode.None;
+	public KeyCode keyToDisable=KeyCode.Space;
 
-	public event Action<GameObject> onDelete;
-	public event Action<GameObject> onClick;
 	private bool isDeleted = false;
 	private Texture originColorDelete;
 	private Texture originColorClick;
@@ -20,7 +18,7 @@ public class DragableObject : MonoBehaviour {
 
 	public void OnPress (bool isPress)
 	{
-		if (keyToDrag != KeyCode.None && Input.GetKey (keyToDrag)==false) {
+		if (keyToDisable != KeyCode.None && Input.GetKey (keyToDisable)==true) {
 			return;
 		}
 
@@ -29,24 +27,6 @@ public class DragableObject : MonoBehaviour {
 		} else {
 			isDragFirst = false;
 			offset = Vector2.zero;
-		}
-
-		//remove when release
-		if (isPress == false && isDeleted == true)
-		{
-			if (onDelete != null)
-			{
-				onDelete (this.gameObject);
-			}
-		}
-
-		//Click
-		if (isPress == false)
-		{
-			if (onClick != null)
-			{
-				onClick (this.gameObject);
-			}
 		}
 
 		//Move in Step
@@ -65,7 +45,7 @@ public class DragableObject : MonoBehaviour {
 
 	public void OnDrag (Vector2 v)
 	{
-		if (keyToDrag != KeyCode.None && Input.GetKey (keyToDrag)==false) {
+		if (keyToDisable != KeyCode.None && Input.GetKey (keyToDisable)==true) {
 			return;
 		}
 

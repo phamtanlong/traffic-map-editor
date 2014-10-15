@@ -3,12 +3,17 @@ using System.Collections;
 
 public class TileHandler : MonoBehaviour {
 
+	[HideInInspector]
 	public Tile tile;
 
-	public bool isSelected = false;
 	public UISprite sprSelect;
 	public UILabel lblId;
 	
+	private bool isSelected = false;
+
+	void Start () {}
+	void Update () {}
+
 	public void Setup (Tile tile) {
 		this.tile = tile;
 
@@ -16,16 +21,20 @@ public class TileHandler : MonoBehaviour {
 	}
 
 	public void OnClick () {
-		if (CurrentTile.Instance != null) {
-			CurrentTile.Instance.Select (false);
+		if (ToolboxHandler.Instance.SelectedTile != null) {
+			ToolboxHandler.Instance.SelectedTile.Select (false);
 		}
 
-		CurrentTile.Instance = this;
-		CurrentTile.Instance.Select (true);
+		ToolboxHandler.Instance.SelectedTile = this;
+		ToolboxHandler.Instance.SelectedTile.Select (true);
+
+		Global.currentTile = this.tile;
 	}
 
 	public void Select (bool select) {
 		isSelected = select;
-		sprSelect.gameObject.SetActive (isSelected);
+		if (sprSelect != null) {
+			sprSelect.gameObject.SetActive (isSelected);
+		}
 	}
 }

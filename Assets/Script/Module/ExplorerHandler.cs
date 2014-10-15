@@ -19,16 +19,22 @@ public class ExplorerHandler : MonoBehaviour {
 	public GameObject fullObj;
 	public UIScrollView scrollView;
 	public UIGrid parent;
+	public static LayerHandler SelectedLayer = null;
 
 	public void SetSelectedLayer (LayerHandler l) {
 		for (int i = 0; i < listLayer.Count; ++i) {
 			listLayer[i].Select (false);
 		}
 
-		CurrentLayer.Instance = l;
+		ExplorerHandler.SelectedLayer = l;
+		if (l != null) {
+			Global.currentLayer = l.layer;
+		} else {
+			Global.currentLayer = null;
+		}
 
-		if (CurrentLayer.Instance != null) {
-			CurrentLayer.Instance.Select (true);
+		if (ExplorerHandler.SelectedLayer != null) {
+			ExplorerHandler.SelectedLayer.Select (true);
 		}
 
 		Main.Instance.SetSelectedLayer ();
@@ -68,9 +74,9 @@ public class ExplorerHandler : MonoBehaviour {
 	}
 
 	public void OnRemoveLayer () {
-		if (CurrentLayer.Instance != null) {
+		if (ExplorerHandler.SelectedLayer != null) {
 
-			LayerHandler l = CurrentLayer.Instance;
+			LayerHandler l = ExplorerHandler.SelectedLayer;
 			
 			listLayer.Remove (l);
 			Main.Instance.RemoveLayer (l);

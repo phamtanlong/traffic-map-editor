@@ -21,9 +21,9 @@ public class DialogNewHandler : MonoBehaviour {
 			h += 1;
 		}
 
-		CurrentMap.Instance.width = w;
-		CurrentMap.Instance.height = h;
-		CurrentMap.Instance.name = inpName.value;
+		Global.currentMap.width = w;
+		Global.currentMap.height = h;
+		Global.currentMap.name = inpName.value;
 
 		Main.Instance.NewMap ();
 	}

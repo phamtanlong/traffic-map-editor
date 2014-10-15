@@ -8,9 +8,9 @@ public class DialogEditHandler : MonoBehaviour {
 	public UIInput inpName;
 
 	void OnEnable() {
-		inpWidth.value = ""+CurrentMap.Instance.width;
-		inpHeight.value = ""+CurrentMap.Instance.height;
-		inpName.value = ""+CurrentMap.Instance.name;
+		inpWidth.value = ""+Global.currentMap.width;
+		inpHeight.value = ""+Global.currentMap.height;
+		inpName.value = ""+Global.currentMap.name;
 	}
 
 	public void OnEditMapOK () {
@@ -27,9 +27,9 @@ public class DialogEditHandler : MonoBehaviour {
 			h += 1;
 		}
 		
-		CurrentMap.Instance.width = w;
-		CurrentMap.Instance.height = h;
-		CurrentMap.Instance.name = inpName.value;
+		Global.currentMap.width = w;
+		Global.currentMap.height = h;
+		Global.currentMap.name = inpName.value;
 
 		Main.Instance.EditMap ();
 	}

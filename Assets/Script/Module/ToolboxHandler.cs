@@ -3,11 +3,20 @@ using System.Collections;
 
 public class ToolboxHandler : MonoBehaviour {
 
+	public static ToolboxHandler Instance;
+
+	[HideInInspector]
+	public TileHandler SelectedTile = null;
+
 	public UIButton[] tabs;
 	public GameObject[] scrollViews;
 
 	private int showedTab;
 	private int currentTab;
+
+	void Awake () {
+		ToolboxHandler.Instance = this;
+	}
 
 	// Use this for initialization
 	void Start () {
