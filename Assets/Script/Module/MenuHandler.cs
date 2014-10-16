@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+using Pathfinding.Serialization.JsonFx;
 
 public class MenuHandler : MonoBehaviour {
 
@@ -55,7 +56,10 @@ public class MenuHandler : MonoBehaviour {
 
 	private void SaveFileCallback (string pathToFile) {
 		Main.Instance.log.text = pathToFile;
-		File.WriteAllText (pathToFile, "I LOVE YOU, this file!");
+
+		string s = DrawPanelHandler.Instance.Export ();
+
+		File.WriteAllText (pathToFile, s);
 		Main.Instance.log.text = "Write completed!";
 	}
 }

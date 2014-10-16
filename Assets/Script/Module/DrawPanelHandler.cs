@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Pathfinding.Serialization.JsonFx;
 
 public class DrawPanelHandler : MonoBehaviour {
 
@@ -20,7 +21,7 @@ public class DrawPanelHandler : MonoBehaviour {
 	public float maxScale;
 
 	[HideInInspector]
-	public Dictionary<int, Dictionary<long, GridTileHandler>> dictTile; //layerId,position,tile
+	public Dictionary<int, Dictionary<int, GridTileHandler>> dictTiles; //layerId,position,tile
 	[HideInInspector]
 	public Dictionary<int, GameObject> dictLayers = new Dictionary<int, GameObject> ();
 
@@ -30,7 +31,7 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	void Start () {
 		SetSize (Global.currentMap.width, Global.currentMap.height);
-		dictTile = new Dictionary<int, Dictionary<long, GridTileHandler>> ();
+		dictTiles = new Dictionary<int, Dictionary<int, GridTileHandler>> ();
 		grid16.gameObject.SetActive (false);
 		grid8.gameObject.SetActive (false);
 	}
@@ -39,6 +40,8 @@ public class DrawPanelHandler : MonoBehaviour {
 		if (Input.GetKeyUp (KeyCode.Backspace) || Input.GetKeyUp (KeyCode.Delete)) 
 		{
 			if (SelectedGridTile != null) {
+				dictTiles[Global.currentLayer.id].Remove (SelectedGridTile.tile.objId);
+
 				GameObject.Destroy (SelectedGridTile.gameObject);
 				SelectedGridTile = null;
 			}
@@ -54,7 +57,7 @@ public class DrawPanelHandler : MonoBehaviour {
 		//clear all
 		int children = grid.transform.childCount;
 
-		dictTile.Clear ();
+		dictTiles.Clear ();
 		foreach (GameObject go in dictLayers.Values) {
 			GameObject.Destroy (go);
 		}
@@ -78,7 +81,7 @@ public class DrawPanelHandler : MonoBehaviour {
 	public void RemoveLayer (int layerId) {
 
 		//remove data
-		dictTile.Remove (layerId);
+		dictTiles.Remove (layerId);
 
 		//remove layer
 		GameObject layer = null;
@@ -147,15 +150,15 @@ public class DrawPanelHandler : MonoBehaviour {
 	void DrawAt (Vector2 pos) {
 		if (Global.currentTile != null && Global.currentLayer != null) {
 			
-			Dictionary<long, GridTileHandler> d = null;
-			dictTile.TryGetValue (Global.currentLayer.id, out d);
+			Dictionary<int, GridTileHandler> d = null;
+			dictTiles.TryGetValue (Global.currentLayer.id, out d);
 			
 			if (d == null) { //new layer if it null
-				d = new Dictionary<long, GridTileHandler> ();
-				dictTile[Global.currentLayer.id] = d;
+				d = new Dictionary<int, GridTileHandler> ();
+				dictTiles[Global.currentLayer.id] = d;
 			}
 
-			long newTileId = Ultil.GetNewObjId ();
+			int newTileId = Ultil.GetNewObjId ();
 			
 			TileHandler ins = GameObject.Instantiate (ToolboxHandler.Instance.SelectedTile) as TileHandler;
 			ins.gameObject.AddComponent (typeof (GridTileHandler));
@@ -163,7 +166,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			GridTileHandler gt = ins.GetComponent<GridTileHandler>();
 			gt.Init (ins, newTileId);
 			gt.tile.objId = newTileId;
-			gt.tile.layerId = Global.currentLayer.id;
+			//gt.tile.layerId = Global.currentLayer.id;
 
 			//--------------------------------------------------
 			gt.name = ""+newTileId;
@@ -178,7 +181,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.transform.localPosition = pos;
 			gt.transform.localScale = Vector2.one;
 
-			dictTile[Global.currentLayer.id][newTileId] = gt;
+			dictTiles[Global.currentLayer.id][newTileId] = gt;
 		}
 	}
 
@@ -187,10 +190,25 @@ public class DrawPanelHandler : MonoBehaviour {
 	#region EXPORT
 
 	public string Export () {
-
 		string s = "";
 
+		Dictionary<int, Dictionary<int, Tile>> dictTilesCopy = new Dictionary<int, Dictionary<int, Tile>> ();
 
+		foreach (KeyValuePair<int, Dictionary<int, GridTileHandler>> p in dictTiles) {
+
+			Dictionary<int, Tile> dCopy = new Dictionary<int, Tile> ();
+
+			foreach (GridTileHandler g in p.Value.Values) {
+				g.tile.x = g.transform.localPosition.x;
+				g.tile.y = g.transform.localPosition.y;
+
+				dCopy[g.tile.objId] = g.tile;
+			}
+
+			dictTilesCopy[p.Key] = dCopy;
+		}
+
+		s = JsonWriter.Serialize (dictTilesCopy);
 
 		return s;
 	}

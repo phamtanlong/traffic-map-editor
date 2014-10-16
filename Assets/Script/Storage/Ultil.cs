@@ -4,7 +4,7 @@ using System.Collections;
 public class Ultil {
 
 	private static int layerId = 0;
-	private static long objId = 0;
+	private static int objId = 0;
 
 	public static void ResetLayerId () {
 		layerId = 0;
@@ -17,7 +17,7 @@ public class Ultil {
 	public static void ResetObjId () {
 		objId = 0;
 	}
-	public static long GetNewObjId () {
+	public static int GetNewObjId () {
 		objId++;
 		return objId;
 	}

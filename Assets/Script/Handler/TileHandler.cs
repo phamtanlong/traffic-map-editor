@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class TileHandler : MonoBehaviour {
+
 	public Tile tile;
 
 	public UISprite sprSelect;
