@@ -53,9 +53,12 @@ public class DrawPanelHandler : MonoBehaviour {
 	public void Reset (int w, int h) {
 		//clear all
 		int children = grid.transform.childCount;
-		for (int i = 0; i < children; ++i) {
-			GameObject.Destroy (grid.transform.GetChild(i).gameObject);
+
+		dictTile.Clear ();
+		foreach (GameObject go in dictLayers.Values) {
+			GameObject.Destroy (go);
 		}
+		dictLayers.Clear ();
 
 		//setsize
 		SetSize (w, h);
@@ -158,7 +161,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			ins.gameObject.AddComponent (typeof (GridTileHandler));
 
 			GridTileHandler gt = ins.GetComponent<GridTileHandler>();
-			gt.Init (ins);
+			gt.Init (ins, newTileId);
 			gt.tile.objId = newTileId;
 			gt.tile.layerId = Global.currentLayer.id;
 
@@ -177,6 +180,19 @@ public class DrawPanelHandler : MonoBehaviour {
 
 			dictTile[Global.currentLayer.id][newTileId] = gt;
 		}
+	}
+
+	#endregion
+
+	#region EXPORT
+
+	public string Export () {
+
+		string s = "";
+
+
+
+		return s;
 	}
 
 	#endregion

@@ -18,7 +18,7 @@ public class GridTileHandler : MonoBehaviour {
 		}
 	}
 
-	public void Init (TileHandler ins) {
+	public void Init (TileHandler ins, long newTileId) {
 
 		this.tile = ins.tile.Copy ();
 
@@ -28,6 +28,7 @@ public class GridTileHandler : MonoBehaviour {
 		UITexture tt = ins.GetComponent<UITexture>();
 		tt.width = tt.mainTexture.width;
 		tt.height = tt.mainTexture.height;
+		tt.depth = (int)newTileId;
 		
 		ins.gameObject.AddComponent (typeof (DragableObject1));
 		

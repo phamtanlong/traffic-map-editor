@@ -21,6 +21,16 @@ public class ExplorerHandler : MonoBehaviour {
 	public UIGrid parent;
 	public static LayerHandler SelectedLayer = null;
 
+	public void Reset () {
+		for (int i = 0; i < listLayer.Count; ++i) {
+			GameObject.Destroy (listLayer[i].gameObject);
+		}
+		listLayer.Clear ();
+
+		SelectedLayer = null;
+		OnNewLayer ();
+	}
+
 	public void SetSelectedLayer (LayerHandler l) {
 		for (int i = 0; i < listLayer.Count; ++i) {
 			listLayer[i].Select (false);

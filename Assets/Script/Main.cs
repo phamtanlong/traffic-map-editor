@@ -12,7 +12,11 @@ public class Main : MonoBehaviour {
 	}
 
 	public void NewMap () {
+		Ultil.ResetLayerId ();
+		Ultil.ResetObjId ();
+
 		DrawPanelHandler.Instance.Reset (Global.currentMap.width, Global.currentMap.height);
+		ExplorerHandler.Instance.Reset ();
 	}
 
 	public void EditMap () {
