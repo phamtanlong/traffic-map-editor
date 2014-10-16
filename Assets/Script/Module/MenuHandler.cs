@@ -13,13 +13,14 @@ public class MenuHandler : MonoBehaviour {
 
 	void Start () {
 		objMenuPanel.SetActive (isShowMenu);
+		UniFileBrowser.use.SendWindowCloseMessage(CloseWindowCallback);
 	}
-
+	
 	public void OnShowHideMenu () {
 		isShowMenu = ! isShowMenu;
 		objMenuPanel.SetActive (isShowMenu);
 	}
-
+	
 	public void FileValueChange () {
 		switch (popFile.value) {
 		case "Open":
@@ -50,8 +51,11 @@ public class MenuHandler : MonoBehaviour {
 		}
 	}
 
-	private void OpenFileCallback (string pathToFile) {
+	private void CloseWindowCallback () {
 		DialogHandler.Instance.dialogBackground.SetActive (false);
+	}
+
+	private void OpenFileCallback (string pathToFile) {
 		Main.Instance.log.text = pathToFile;
 		string s = File.ReadAllText (pathToFile);
 		Main.Instance.log.text = s;
@@ -60,7 +64,6 @@ public class MenuHandler : MonoBehaviour {
 	}
 
 	private void SaveFileCallback (string pathToFile) {
-		DialogHandler.Instance.dialogBackground.SetActive (false);
 		Main.Instance.log.text = pathToFile;
 
 		string s = Main.Instance.Export ();

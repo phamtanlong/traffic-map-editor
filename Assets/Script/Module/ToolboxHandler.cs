@@ -14,8 +14,8 @@ public class ToolboxHandler : MonoBehaviour {
 	public UIButton[] tabs;
 	public GameObject[] scrollViews;
 
-	private int showedTab;
-	private int currentTab;
+	public int showedTab;
+	public int currentTab;
 
 	void Awake () {
 		ToolboxHandler.Instance = this;
@@ -53,7 +53,7 @@ public class ToolboxHandler : MonoBehaviour {
 		RefreshTabState ();
 	}
 
-	private void RefreshTabState () {
+	public void RefreshTabState () {
 		for (int i = 0; i < scrollViews.Length; ++i) {
 			scrollViews[i].gameObject.SetActive (false);
 		}

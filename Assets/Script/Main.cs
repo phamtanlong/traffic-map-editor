@@ -66,6 +66,8 @@ public class Main : MonoBehaviour {
 			float scale = float.Parse (state["scale"].ToString());
 			float step = float.Parse (state["step"].ToString());
 			int current_layer = int.Parse(state["current_layer"].ToString());
+			int showed_tab = int.Parse(state["showed_tab"].ToString());
+			int current_tab = int.Parse(state["current_tab"].ToString());
 
 			DrawPanelHandler.Instance.grid.transform.localScale = new Vector3 (scale,scale,1);
 			DrawPanelHandler.Instance.grid.transform.localPosition = new Vector3 (x,y,0);
@@ -79,9 +81,14 @@ public class Main : MonoBehaviour {
 					break;
 				}
 			}
+
+			ToolboxHandler.Instance.showedTab = 0;
+			ToolboxHandler.Instance.currentTab = 0;
+			ToolboxHandler.Instance.RefreshTabState ();
+			ToolboxHandler.Instance.showedTab = showed_tab;
+			ToolboxHandler.Instance.currentTab = current_tab;
+			ToolboxHandler.Instance.RefreshTabState ();
 		}
-
-
 	}
 
 	public string Export () {
@@ -123,6 +130,9 @@ public class Main : MonoBehaviour {
 		state["step"] = DragableObject1.step.x;
 		//layer
 		state["current_layer"] = ExplorerHandler.SelectedLayer.layer.id;
+		//toolbox
+		state["showed_tab"] = ToolboxHandler.Instance.showedTab;
+		state["current_tab"] = ToolboxHandler.Instance.currentTab;
 		//-------------------------
 		total["state"] = state;
 
