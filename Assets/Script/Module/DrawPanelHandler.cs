@@ -142,31 +142,30 @@ public class DrawPanelHandler : MonoBehaviour {
 			Vector2 vec = UICamera.lastWorldPosition;
 			Vector3 vec2 = transform.InverseTransformPoint (vec.x, vec.y, 0);
 			Vector2 v = new Vector2 (vec2.x, vec2.y);
-			
-			DrawAt (v);
+
+			int newTileId = Ultil.GetNewObjId ();
+			AddNewObject (v, newTileId, ToolboxHandler.Instance.SelectedTile, Global.currentLayer.id);
 		}
 	}
 
-	void DrawAt (Vector2 pos) {
-		if (Global.currentTile != null && Global.currentLayer != null) {
+	public void AddNewObject (Vector2 pos, int newTileId, TileHandler tileHandler, int layerId) {
+		if (tileHandler != null && layerId > 0) {
 			
 			Dictionary<int, GridTileHandler> d = null;
-			dictTiles.TryGetValue (Global.currentLayer.id, out d);
+			dictTiles.TryGetValue (layerId, out d);
 			
 			if (d == null) { //new layer if it null
 				d = new Dictionary<int, GridTileHandler> ();
-				dictTiles[Global.currentLayer.id] = d;
+				dictTiles[layerId] = d;
 			}
 
-			int newTileId = Ultil.GetNewObjId ();
-			
-			TileHandler ins = GameObject.Instantiate (ToolboxHandler.Instance.SelectedTile) as TileHandler;
+			TileHandler ins = GameObject.Instantiate (tileHandler) as TileHandler;
 			ins.gameObject.AddComponent (typeof (GridTileHandler));
 
 			GridTileHandler gt = ins.GetComponent<GridTileHandler>();
 			gt.Init (ins, newTileId);
 			gt.tile.objId = newTileId;
-			//gt.tile.layerId = Global.currentLayer.id;
+			//gt.tile.layerId = layerId;
 
 			//--------------------------------------------------
 			gt.name = ""+newTileId;
@@ -175,42 +174,14 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.gameObject.GetComponent <EventTransfer>().onPress = this.GetComponent<DragableObject>().OnPress;
 			gt.gameObject.GetComponent <EventTransfer>().onDrag = this.GetComponent<DragableObject>().OnDrag;
 
-			GameObject l = gameObject.GetComponent<DrawPanelHandler>().dictLayers[Global.currentLayer.id];
+			GameObject l = gameObject.GetComponent<DrawPanelHandler>().dictLayers[layerId];
 			
 			gt.transform.parent = l.transform;
 			gt.transform.localPosition = pos;
 			gt.transform.localScale = Vector2.one;
 
-			dictTiles[Global.currentLayer.id][newTileId] = gt;
+			dictTiles[layerId][newTileId] = gt;
 		}
-	}
-
-	#endregion
-
-	#region EXPORT
-
-	public string Export () {
-		string s = "";
-
-		Dictionary<int, Dictionary<int, Tile>> dictTilesCopy = new Dictionary<int, Dictionary<int, Tile>> ();
-
-		foreach (KeyValuePair<int, Dictionary<int, GridTileHandler>> p in dictTiles) {
-
-			Dictionary<int, Tile> dCopy = new Dictionary<int, Tile> ();
-
-			foreach (GridTileHandler g in p.Value.Values) {
-				g.tile.x = g.transform.localPosition.x;
-				g.tile.y = g.transform.localPosition.y;
-
-				dCopy[g.tile.objId] = g.tile;
-			}
-
-			dictTilesCopy[p.Key] = dCopy;
-		}
-
-		s = JsonWriter.Serialize (dictTilesCopy);
-
-		return s;
 	}
 
 	#endregion

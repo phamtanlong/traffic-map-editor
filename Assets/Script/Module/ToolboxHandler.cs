@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ToolboxHandler : MonoBehaviour {
 
@@ -7,6 +8,8 @@ public class ToolboxHandler : MonoBehaviour {
 
 	[HideInInspector]
 	public TileHandler SelectedTile = null;
+	[HideInInspector]
+	public Dictionary<int,TileHandler> dictTileHandler = new Dictionary<int, TileHandler> ();
 
 	public UIButton[] tabs;
 	public GameObject[] scrollViews;
@@ -62,5 +65,13 @@ public class ToolboxHandler : MonoBehaviour {
 			scrollViews[currentTab].gameObject.SetActive (true);
 			showedTab = currentTab;
 		}
+	}
+
+	public void AddTileHandler (TileHandler t) {
+		dictTileHandler[t.tile.typeId] = t;
+	}
+
+	public TileHandler GetTileHandler (int id) {
+		return dictTileHandler[id];
 	}
 }

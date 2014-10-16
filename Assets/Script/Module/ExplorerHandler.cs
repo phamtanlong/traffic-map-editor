@@ -21,6 +21,28 @@ public class ExplorerHandler : MonoBehaviour {
 	public UIGrid parent;
 	public static LayerHandler SelectedLayer = null;
 
+
+	public void NewLayer (int id) {
+		Layer p = new Layer ();
+		p.name = "layer " + id;
+		p.id = id;
+		
+		GameObject ins = GameObject.Instantiate (prefabLayer) as GameObject;
+		LayerHandler l = ins.GetComponent <LayerHandler> ();
+		l.Setup (p);
+		l.transform.parent = parent.transform;
+		l.transform.localScale = Vector3.one;
+		
+		parent.AddChild (l.transform);
+		parent.Reposition ();
+		
+		SetSelectedLayer (l);
+		
+		//
+		listLayer.Add (l);
+		Main.Instance.NewLayer (l);
+	}
+
 	public void Reset () {
 		for (int i = 0; i < listLayer.Count; ++i) {
 			GameObject.Destroy (listLayer[i].gameObject);
@@ -28,7 +50,6 @@ public class ExplorerHandler : MonoBehaviour {
 		listLayer.Clear ();
 
 		SelectedLayer = null;
-		OnNewLayer ();
 	}
 
 	public void SetSelectedLayer (LayerHandler l) {
@@ -61,26 +82,8 @@ public class ExplorerHandler : MonoBehaviour {
 	
 	public void OnNewLayer () {
 		int id = Ultil.GetNewLayerId ();
-		string name = "layer " + id;
 		
-		Layer p = new Layer ();
-		p.name = name;
-		p.id = id;
-
-		GameObject ins = GameObject.Instantiate (prefabLayer) as GameObject;
-		LayerHandler l = ins.GetComponent <LayerHandler> ();
-		l.Setup (p);
-		l.transform.parent = parent.transform;
-		l.transform.localScale = Vector3.one;
-		
-		parent.AddChild (l.transform);
-		parent.Reposition ();
-		
-		SetSelectedLayer (l);
-
-		//
-		listLayer.Add (l);
-		Main.Instance.NewLayer (l);
+		NewLayer (id);
 	}
 
 	public void OnRemoveLayer () {

@@ -23,10 +23,12 @@ public class MenuHandler : MonoBehaviour {
 	public void FileValueChange () {
 		switch (popFile.value) {
 		case "Open":
+			DialogHandler.Instance.dialogBackground.SetActive (true);
 			UniFileBrowser.use.OpenFileWindow (OpenFileCallback);
 			break;
 
 		case "Save":
+			DialogHandler.Instance.dialogBackground.SetActive (true);
 			UniFileBrowser.use.SaveFileWindow (SaveFileCallback);
 			break;
 
@@ -49,15 +51,19 @@ public class MenuHandler : MonoBehaviour {
 	}
 
 	private void OpenFileCallback (string pathToFile) {
+		DialogHandler.Instance.dialogBackground.SetActive (false);
 		Main.Instance.log.text = pathToFile;
 		string s = File.ReadAllText (pathToFile);
 		Main.Instance.log.text = s;
+
+		Main.Instance.Import (s);
 	}
 
 	private void SaveFileCallback (string pathToFile) {
+		DialogHandler.Instance.dialogBackground.SetActive (false);
 		Main.Instance.log.text = pathToFile;
 
-		string s = DrawPanelHandler.Instance.Export ();
+		string s = Main.Instance.Export ();
 
 		File.WriteAllText (pathToFile, s);
 		Main.Instance.log.text = "Write completed!";

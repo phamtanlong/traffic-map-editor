@@ -26,6 +26,9 @@ public class PanelInitilizer : MonoBehaviour {
 			
 			grid.AddChild (go);
 			go.transform.localScale = Vector3.one;
+
+			//Add to ToolboxHandler
+			ToolboxHandler.Instance.AddTileHandler (handler);
 		}
 	}
 

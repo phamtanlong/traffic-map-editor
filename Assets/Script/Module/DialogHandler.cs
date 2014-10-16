@@ -7,6 +7,7 @@ public class DialogHandler : MonoBehaviour {
 
 	public GameObject dialogNewMap;
 	public GameObject dialogEditMap;
+	public GameObject dialogBackground;
 
 	void Awake () {
 		Instance = this;
