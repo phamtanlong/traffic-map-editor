@@ -45,10 +45,11 @@ public class Main : MonoBehaviour {
 
 						Vector2 v = new Vector2 (t.x, t.y);
 						TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (t.typeId);
+						tilehandler.tile = t;
 
 						ToolboxHandler.Instance.SelectedTile = tilehandler;
 						Global.currentTile = tilehandler.tile;
-						DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, layerId);
+						DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, t, layerId);
 					}
 				} else {
 					Debug.LogError ("Null tile dictionary");

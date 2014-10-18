@@ -39,11 +39,13 @@ public class DrawPanelHandler : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyUp (KeyCode.Backspace) || Input.GetKeyUp (KeyCode.Delete)) 
 		{
-			if (SelectedGridTile != null) {
-				dictTiles[Global.currentLayer.id].Remove (SelectedGridTile.tile.objId);
+			if (InspectorHandler.IsFocus == false) {
+				if (SelectedGridTile != null) {
+					dictTiles[Global.currentLayer.id].Remove (SelectedGridTile.tile.objId);
 
-				GameObject.Destroy (SelectedGridTile.gameObject);
-				SelectedGridTile = null;
+					GameObject.Destroy (SelectedGridTile.gameObject);
+					SelectedGridTile = null;
+				}
 			}
 		}
 	}
@@ -117,6 +119,10 @@ public class DrawPanelHandler : MonoBehaviour {
 		}
 	}
 
+	public void OnChangeSelectedTile () {
+		InspectorHandler.Instance.SetSelectedTile (DrawPanelHandler.Instance.SelectedGridTile.tile);
+	}
+
 	#region DRAW
 
 	void OnScroll (float delta) {
@@ -159,11 +165,11 @@ public class DrawPanelHandler : MonoBehaviour {
 			Vector2 v = new Vector2 (vec2.x, vec2.y);
 
 			int newTileId = Ultil.GetNewObjId ();
-			AddNewObject (v, newTileId, ToolboxHandler.Instance.SelectedTile, Global.currentLayer.id);
+			AddNewObject (v, newTileId, ToolboxHandler.Instance.SelectedTile, new Tile (), Global.currentLayer.id);
 		}
 	}
 
-	public void AddNewObject (Vector2 pos, int newTileId, TileHandler tileHandler, int layerId) {
+	public void AddNewObject (Vector2 pos, int newTileId, TileHandler tileHandler, Tile tile, int layerId) {
 		if (tileHandler != null && layerId > 0) {
 			
 			Dictionary<int, GridTileHandler> d = null;
@@ -179,6 +185,7 @@ public class DrawPanelHandler : MonoBehaviour {
 
 			GridTileHandler gt = ins.GetComponent<GridTileHandler>();
 			gt.Init (ins, newTileId);
+			gt.tile = tile.Copy ();
 			gt.tile.objId = newTileId;
 			//gt.tile.layerId = layerId;
 

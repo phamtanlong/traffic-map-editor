@@ -9,18 +9,32 @@ public class GridTileHandler : MonoBehaviour {
 	void Start () {}
 	void Update () {}
 
-	public void OnSelect (bool isSelect) {
-		if (isSelect) {
-			DrawPanelHandler.Instance.SelectedGridTile = this;
+	bool isSelected = false;
+
+	public void Select (bool select) {
+		if (select) {
 			GetComponent<UITexture>().color = new Color (1.0f,0.5f,0.5f,1);
 		} else {
 			GetComponent<UITexture>().color = Color.white;
 		}
 	}
 
-	public void Init (TileHandler ins, long newTileId) {
+	void OnClick () {
+		if (isSelected == false) {
+			isSelected = true;
 
-		this.tile = ins.tile.Copy ();
+			if (DrawPanelHandler.Instance.SelectedGridTile != null) {
+				DrawPanelHandler.Instance.SelectedGridTile.Select (false);
+			}
+			DrawPanelHandler.Instance.SelectedGridTile = this;
+			DrawPanelHandler.Instance.SelectedGridTile.Select (true);
+			DrawPanelHandler.Instance.OnChangeSelectedTile ();
+		} else {
+			isSelected = false;
+		}
+	}
+
+	public void Init (TileHandler ins, long newTileId) {
 
 		//edit
 		ins.gameObject.layer = 9;
