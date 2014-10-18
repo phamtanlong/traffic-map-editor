@@ -95,9 +95,24 @@ public class DrawPanelHandler : MonoBehaviour {
 			if (go.name == ""+Global.currentLayer.id) {
 				UISprite wi = go.GetComponent<UISprite>();
 				wi.color = Color.white;
+
+				//enable boxcollider
+
+				GridTileHandler[] grids = wi.GetComponentsInChildren <GridTileHandler> ();
+				for (int i = 0; i < grids.Length; ++i) {
+					grids[i].gameObject.GetComponent <BoxCollider>().enabled = true;
+				}
+
 			} else {
 				UISprite wi = go.GetComponent<UISprite>();
 				wi.color = new Color (1,1,1,0.7f);
+
+				//disable boxcollider
+				
+				GridTileHandler[] grids = wi.GetComponentsInChildren <GridTileHandler> ();
+				for (int i = 0; i < grids.Length; ++i) {
+					grids[i].gameObject.GetComponent <BoxCollider>().enabled = false;
+				}
 			}
 		}
 	}
