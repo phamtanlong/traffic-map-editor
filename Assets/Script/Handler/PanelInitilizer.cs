@@ -7,8 +7,10 @@ public class PanelInitilizer : MonoBehaviour {
 	public LayerType layerType;
 	public string folder;
 	public GameObject prefab;
-	
-	void Start () {
+
+	void Start () {}
+
+	public void Init () {
 		VerticalGridView grid = this.GetComponent <VerticalGridView> ();
 
 		Texture[] texes = Resources.LoadAll<Texture>(folder);

@@ -11,61 +11,21 @@ public class ToolboxHandler : MonoBehaviour {
 	[HideInInspector]
 	public Dictionary<int,TileHandler> dictTileHandler = new Dictionary<int, TileHandler> ();
 
-	public UIButton[] tabs;
-	public GameObject[] scrollViews;
+	public UIToggle[] tabs;
+	public PanelInitilizer[] panels;
 
-	public int showedTab;
-	public int currentTab;
 
 	void Awake () {
 		ToolboxHandler.Instance = this;
 	}
 
-	// Use this for initialization
+
 	void Start () {
-		showedTab = -1;
-		currentTab = 0;
-		RefreshTabState ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
-	public void Tab0 () {
-		currentTab = 0;
-		RefreshTabState ();
-	}
-	
-	public void Tab1 () {
-		currentTab = 1;
-		RefreshTabState ();
-	}
-	
-	public void Tab2 () {
-		currentTab = 2;
-		RefreshTabState ();
-	}
-	
-	public void Tab3 () {
-		currentTab = 3;
-		RefreshTabState ();
-	}
-
-	public void RefreshTabState () {
-		for (int i = 0; i < scrollViews.Length; ++i) {
-			scrollViews[i].gameObject.SetActive (false);
-		}
-
-		if (showedTab == currentTab) {
-			scrollViews[currentTab].gameObject.SetActive (false);
-			showedTab = -1;
-		} else {
-			scrollViews[currentTab].gameObject.SetActive (true);
-			showedTab = currentTab;
+		for (int i = 0; i < panels.Length; ++i) {
+			panels[i].Init ();
 		}
 	}
+	void Update () {}
 
 	public void AddTileHandler (TileHandler t) {
 		dictTileHandler[t.tile.typeId] = t;
@@ -85,15 +45,15 @@ public class ToolboxHandler : MonoBehaviour {
 	public void OnSelectedLayerChange () {
 		switch (Global.currentLayer.type) {
 		case LayerType.Road:
-			Tab0 ();
+			tabs[0].value = true;
 			break;
 
 		case LayerType.Sign:
-			Tab1 ();
+			tabs[1].value = true;
 			break;
 
 		case LayerType.View:
-			Tab2 ();
+			tabs[2].value = true;
 			break;
 		}
 	}
