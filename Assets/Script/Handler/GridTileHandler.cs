@@ -43,6 +43,9 @@ public class GridTileHandler : MonoBehaviour {
 		tt.width = tt.mainTexture.width;
 		tt.height = tt.mainTexture.height;
 		tt.depth = (int)newTileId;
+
+		BoxCollider b = ins.GetComponent<BoxCollider>();
+		b.size = new Vector3 (tt.mainTexture.width, tt.mainTexture.height, 1);
 		
 		ins.gameObject.AddComponent (typeof (DragableObject1));
 		

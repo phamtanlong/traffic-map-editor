@@ -9,6 +9,7 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	public GridTileHandler SelectedGridTile = null;
 
+	public Camera camera;
 	public KeyCode keyToDrag = KeyCode.Space;
 
 	public UISprite grid;
@@ -113,35 +114,42 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	#region DRAW
 
-	void OnScroll (float delta) {
-		Vector3 s = grid.transform.localScale;
-		s.x = s.x + delta * scaleSpeed;
-		s.y = s.y + delta * scaleSpeed;
+	void OnScroll (float delta) { 
+		return;
 
-		if (s.x >= 0.2f && s.x <= 12.0f) {
-			grid.transform.localScale = s;
-			Main.Instance.log.text = "Scale " + s.x;
+		float s = camera.orthographicSize;
+		s = s + delta * scaleSpeed;
 
-			if (s.x < 4.0f) {
-				grid32.gameObject.SetActive (true);
-				grid16.gameObject.SetActive (false);
-				grid8.gameObject.SetActive (false);
+		if (s < 0.2f) {
+			s = 0.2f;
+		}
 
-			} else if (s.x < 8.0f) {
-				grid32.gameObject.SetActive (false);
-				grid16.gameObject.SetActive (true);
-				grid8.gameObject.SetActive (false);
+		if (s > 4.0f) {
+			s = 4.0f;
+		}
 
-				grid16.width = grid.width * 2;
-				grid16.height = grid.height * 2;
-			} else {
-				grid32.gameObject.SetActive (false);
-				grid16.gameObject.SetActive (false);
-				grid8.gameObject.SetActive (true);
-				
-				grid8.width = grid.width * 4;
-				grid8.height = grid.height * 4;
-			}
+		Main.Instance.log.text = "Scale " + s;
+		camera.orthographicSize = s;
+
+		if (s < 1.0f) {
+			grid32.gameObject.SetActive (true);
+			grid16.gameObject.SetActive (false);
+			grid8.gameObject.SetActive (false);
+
+		} else if (s < 2.0f) {
+			grid32.gameObject.SetActive (false);
+			grid16.gameObject.SetActive (true);
+			grid8.gameObject.SetActive (false);
+
+			grid16.width = grid.width * 2;
+			grid16.height = grid.height * 2;
+		} else {
+			grid32.gameObject.SetActive (false);
+			grid16.gameObject.SetActive (false);
+			grid8.gameObject.SetActive (true);
+			
+			grid8.width = grid.width * 4;
+			grid8.height = grid.height * 4;
 		}
 	}
 
