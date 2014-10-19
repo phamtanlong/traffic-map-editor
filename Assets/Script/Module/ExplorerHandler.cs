@@ -10,7 +10,9 @@ public class ExplorerHandler : MonoBehaviour {
 	}
 
 	void Start () {
-		OnNewLayer ();
+//		CreateNewLayer (LayerType.Road);
+//		CreateNewLayer (LayerType.Sign);
+//		CreateNewLayer (LayerType.View);
 	}
 	
 	public static List<LayerHandler> listLayer = new List<LayerHandler> ();
@@ -19,12 +21,25 @@ public class ExplorerHandler : MonoBehaviour {
 	public GameObject fullObj;
 	public UIScrollView scrollView;
 	public UIGrid parent;
+	public UIPopupList popNewLayer;
 	public static LayerHandler SelectedLayer = null;
 
-
-	public void NewLayer (int id) {
+	public void CreateNewLayer (LayerType layerType) {
+		int id = Ultil.GetNewLayerId ();
+		
+		NewLayer (id, layerType);
+	}
+	
+	public void NewLayer (int id, LayerType layerType, string layerName = null) {
 		Layer p = new Layer ();
-		p.name = "layer " + id;
+		p.type = layerType;
+
+		if (layerName == null) {
+			p.name = layerType + " " + id;
+		} else {
+			p.name = layerName;
+		}
+
 		p.id = id;
 		
 		GameObject ins = GameObject.Instantiate (prefabLayer) as GameObject;
@@ -79,13 +94,23 @@ public class ExplorerHandler : MonoBehaviour {
 	}
 
 	#region Event Handler
-	
-	public void OnNewLayer () {
-		int id = Ultil.GetNewLayerId ();
-		
-		NewLayer (id);
-	}
 
+	public void OnCreateNewLayer () {
+		switch (popNewLayer.value) {
+		case "+Road":
+			CreateNewLayer (LayerType.Road);
+			break;
+
+		case "+Sign":
+			CreateNewLayer (LayerType.Sign);
+			break;
+
+		case "+View":
+			CreateNewLayer (LayerType.View);
+			break;
+		}
+	}
+	
 	public void OnRemoveLayer () {
 		if (ExplorerHandler.SelectedLayer != null) {
 

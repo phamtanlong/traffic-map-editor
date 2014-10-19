@@ -72,6 +72,29 @@ public class ToolboxHandler : MonoBehaviour {
 	}
 
 	public TileHandler GetTileHandler (int id) {
-		return dictTileHandler[id];
+		TileHandler t = null;
+		dictTileHandler.TryGetValue (id, out t);
+
+		if (t == null) {
+			Main.Instance.log.text = "Can not find out tile: " + id;
+		}
+
+		return t;
+	}
+
+	public void OnSelectedLayerChange () {
+		switch (Global.currentLayer.type) {
+		case LayerType.Road:
+			Tab0 ();
+			break;
+
+		case LayerType.Sign:
+			Tab1 ();
+			break;
+
+		case LayerType.View:
+			Tab2 ();
+			break;
+		}
 	}
 }

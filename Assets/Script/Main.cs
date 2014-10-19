@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Pathfinding.Serialization.JsonFx;
@@ -29,30 +30,34 @@ public class Main : MonoBehaviour {
 		}
 
 
-		//Layer
-		Dictionary<string, object> layer = total["layer"] as Dictionary<string, object>;
-		if (layer != null) {
-			foreach (KeyValuePair<string, object> p in layer) {
+		//Layers
+		Dictionary<string, object> layers = total["layer"] as Dictionary<string, object>;
+		if (layers != null) {
+
+			foreach (KeyValuePair<string, object> p in layers) {
+				//p = 1 layer
+				Dictionary<string, object> layer = p.Value as Dictionary<string, object>;
+				int layerId = int.Parse (layer["id"].ToString ());
+				string name = layer["name"].ToString ();
+				LayerType layerType = (LayerType) Enum.Parse (typeof (LayerType), layer["type"].ToString ());
+
 				//New Layer
-				int layerId = int.Parse (p.Key);
-				ExplorerHandler.Instance.NewLayer (layerId);
+				ExplorerHandler.Instance.NewLayer (layerId, layerType, name);
 
-				//Add Object
-				Dictionary<string, object> tile = p.Value as Dictionary<string, object>;
-				if (tile != null) {
-					foreach (object o in tile.Values) {
-						Tile t = JsonReader.Deserialize<Tile> (JsonWriter.Serialize (o));
+				//Tiles
+				Dictionary<string, object> tiles = layer["tile"] as Dictionary<string, object>;
 
-						Vector2 v = new Vector2 (t.x, t.y);
-						TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (t.typeId);
-						tilehandler.tile = t;
-
-						ToolboxHandler.Instance.SelectedTile = tilehandler;
-						Global.currentTile = tilehandler.tile;
-						DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, t, layerId);
-					}
-				} else {
-					Debug.LogError ("Null tile dictionary");
+				//Tile
+				foreach (KeyValuePair<string, object> p2 in tiles) {
+					Tile t = JsonReader.Deserialize<Tile> (JsonWriter.Serialize (p2.Value));
+					
+					Vector2 v = new Vector2 (t.x, t.y);
+					TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (t.typeId);
+					tilehandler.tile = t;
+					
+					ToolboxHandler.Instance.SelectedTile = tilehandler;
+					Global.currentTile = tilehandler.tile;
+					DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, t, layerId);
 				}
 			}
 		} else {
@@ -97,7 +102,7 @@ public class Main : MonoBehaviour {
 		
 
 		//Map Info
-		Dictionary<string,object> info = new Dictionary<string, object> ();
+		Dictionary<string, object> info = new Dictionary<string, object> ();
 		info["name"] = Global.currentMap.name;
 		info["width"] = Global.currentMap.width;
 		info["height"] = Global.currentMap.height;
@@ -107,18 +112,30 @@ public class Main : MonoBehaviour {
 
 
 		//Layers
-		Dictionary<int, Dictionary<int, Tile>> layer = new Dictionary<int, Dictionary<int, Tile>> ();		
-		foreach (KeyValuePair<int, Dictionary<int, GridTileHandler>> p in DrawPanelHandler.Instance.dictTiles) {
-			Dictionary<int, Tile> tile = new Dictionary<int, Tile> ();
-			foreach (GridTileHandler g in p.Value.Values) {
+		Dictionary<int, object> layers = new Dictionary<int, object> (); //layerId, GridLayerHandler
+		foreach (KeyValuePair<int, GridLayerHandler> p in DrawPanelHandler.Instance.dictLayers) {
+
+			//layer in layers
+			Dictionary<string, object> layer = new Dictionary<string, object> (); //key, value
+			layer["id"] = p.Value.layer.id;
+			layer["name"] = p.Value.layer.name;
+			layer["type"] = p.Value.layer.type;
+
+			//Tiles in layer
+			Dictionary<int, object> tiles = new Dictionary<int, object> ();
+
+			foreach (GridTileHandler g in p.Value.dictTiles.Values) {
 				g.tile.x = g.transform.localPosition.x;
 				g.tile.y = g.transform.localPosition.y;
-				tile[g.tile.objId] = g.tile;
+
+				tiles[g.tile.objId] = g.tile;
 			}
-			layer[p.Key] = tile;
+
+			layer["tile"] = tiles;
+			layers[p.Key] = layer;
 		}
 		//-------------------------
-		total["layer"] = layer; 
+		total["layer"] = layers;
 
 
 		//State
@@ -153,7 +170,7 @@ public class Main : MonoBehaviour {
 
 	public void NewMap () {
 		Reset ();
-		ExplorerHandler.Instance.OnNewLayer ();
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.Road);
 	}
 
 	public void EditMap () {
@@ -161,7 +178,7 @@ public class Main : MonoBehaviour {
 	}
 
 	public void NewLayer (LayerHandler l) {
-		DrawPanelHandler.Instance.NewLayer (l.layer.id);
+		DrawPanelHandler.Instance.NewLayer (l.layer);
 	}
 
 	public void RemoveLayer (LayerHandler selectedLayer) {
@@ -169,6 +186,7 @@ public class Main : MonoBehaviour {
 	}
 
 	public void SetSelectedLayer () {
-		DrawPanelHandler.Instance.SelectLayer ();
+		DrawPanelHandler.Instance.OnSelectedLayerChange ();
+		ToolboxHandler.Instance.OnSelectedLayerChange ();
 	}
 }

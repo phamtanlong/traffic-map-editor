@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class PanelInitilizer : MonoBehaviour {
 
+	public LayerType layerType;
 	public string folder;
 	public GameObject prefab;
 	
@@ -22,6 +23,7 @@ public class PanelInitilizer : MonoBehaviour {
 			TileHandler handler = go.GetComponent<TileHandler>();
 			Tile tile = new Tile ();
 			tile.typeId = int.Parse (t.name);
+			tile.layerType = this.layerType;
 			handler.Setup (tile);
 			
 			grid.AddChild (go);
