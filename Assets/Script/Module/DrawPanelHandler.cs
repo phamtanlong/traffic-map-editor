@@ -13,9 +13,6 @@ public class DrawPanelHandler : MonoBehaviour {
 	public KeyCode keyToDrag = KeyCode.Space;
 
 	public UISprite grid;
-	public UISprite grid32;
-	public UISprite grid16;
-	public UISprite grid8;
 	public GameObject prefabGridLayer;
 	public float scaleSpeed;
 	public float minScale;
@@ -30,8 +27,6 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	void Start () {
 		SetSize (Global.currentMap.width, Global.currentMap.height);
-		grid16.gameObject.SetActive (false);
-		grid8.gameObject.SetActive (false);
 	}
 
 	void Update () {
@@ -132,24 +127,11 @@ public class DrawPanelHandler : MonoBehaviour {
 		camera.orthographicSize = s;
 
 		if (s <= 1.0f) {
-			grid32.gameObject.SetActive (true);
-			grid16.gameObject.SetActive (false);
-			grid8.gameObject.SetActive (false);
-
+			grid.spriteName = "tile128";
 		} else if (s <= 2.0f) {
-			grid32.gameObject.SetActive (false);
-			grid16.gameObject.SetActive (true);
-			grid8.gameObject.SetActive (false);
-
-			grid16.width = grid.width * 2;
-			grid16.height = grid.height * 2;
+			grid.spriteName = "tile256";
 		} else {
-			grid32.gameObject.SetActive (false);
-			grid16.gameObject.SetActive (false);
-			grid8.gameObject.SetActive (true);
-			
-			grid8.width = grid.width * 4;
-			grid8.height = grid.height * 4;
+			grid.spriteName = "tile512";
 		}
 	}
 
