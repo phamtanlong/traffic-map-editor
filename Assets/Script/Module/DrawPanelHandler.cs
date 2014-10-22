@@ -112,33 +112,6 @@ public class DrawPanelHandler : MonoBehaviour {
 		InspectorHandler.Instance.SetSelectedTile (DrawPanelHandler.Instance.SelectedGridTile.tile);
 	}
 
-//	public void SetZoom (float value) {
-//		grid.transform.localScale = new Vector3 (value, value, 1);
-//
-//		float s = grid.transform.localScale.x;
-//
-//		if (s >= 1.0f) {
-//			grid32.gameObject.SetActive (true);
-//			grid16.gameObject.SetActive (false);
-//			grid8.gameObject.SetActive (false);
-//			
-//		} else if (s >= 0.5f) {
-//			grid32.gameObject.SetActive (false);
-//			grid16.gameObject.SetActive (true);
-//			grid8.gameObject.SetActive (false);
-//			
-//			grid16.width = grid.width / 2;
-//			grid16.height = grid.height / 2;
-//		} else {
-//			grid32.gameObject.SetActive (false);
-//			grid16.gameObject.SetActive (false);
-//			grid8.gameObject.SetActive (true);
-//			
-//			grid8.width = grid.width / 4;
-//			grid8.height = grid.height / 4;
-//		}
-//	}
-
 	#region DRAW
 
 	void OnScroll (float delta) { 

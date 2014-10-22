@@ -8,7 +8,6 @@ public class MenuHandler : MonoBehaviour {
 	public GameObject objMenuPanel;
 	public UIPopupList popFile;
 	public UIPopupList popEdit;
-	public UIPopupList popZoom;
 
 	public bool isShowMenu;
 
@@ -51,33 +50,6 @@ public class MenuHandler : MonoBehaviour {
 			break;
 		}
 	}
-
-//	public void ZoomValueChange () {
-//		switch (popZoom.value) {
-//		case "200%":
-//			//DrawPanelHandler.Instance.SetZoom (2.0f);
-//			Main.Instance.ObjCamera.orthographicSize = 0.5f;
-//			break;
-//
-//		case "100%":
-//			//DrawPanelHandler.Instance.SetZoom (1.0f);
-//			Main.Instance.ObjCamera.orthographicSize = 1.0f;
-//			break;
-//			
-//		case "75%":
-//			//DrawPanelHandler.Instance.SetZoom (0.75f);
-//			Main.Instance.ObjCamera.orthographicSize = 0.5f;
-//			break;
-//			
-//		case "50%":
-//			DrawPanelHandler.Instance.SetZoom (0.50f);
-//			break;
-//			
-//		case "25%":
-//			DrawPanelHandler.Instance.SetZoom (0.25f);
-//			break;
-//		}
-//	}
 
 	private void CloseWindowCallback () {
 		DialogHandler.Instance.dialogBackground.SetActive (false);
