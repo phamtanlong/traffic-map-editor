@@ -68,6 +68,7 @@ public class DrawPanelHandler : MonoBehaviour {
 		ins.name = ""+l.id;
 		ins.transform.parent = grid.transform;
 		ins.transform.localScale = Vector3.one;
+		ins.transform.localPosition = Vector3.zero;
 		ins.gameObject.GetComponent<UIWidget>().depth = l.id;
 		GridLayerHandler layer = ins.GetComponent <GridLayerHandler> ();
 		layer.layer = l.Copy ();
