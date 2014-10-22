@@ -12,8 +12,9 @@ public class DragableObject : MonoBehaviour {
 	private bool isDeleted = false;
 	private Texture originColorDelete;
 	private Texture originColorClick;
-	private Vector2 offset = Vector2.zero;
 	private bool isDragFirst = false;
+	private Vector2 lastTouchPosition = Vector2.zero;
+	private Vector3 lastPosition = Vector3.zero;
 
 	void Start () {}
 	void Update () {}
@@ -28,7 +29,6 @@ public class DragableObject : MonoBehaviour {
 			isDragFirst = true;
 		} else {
 			isDragFirst = false;
-			offset = Vector2.zero;
 		}
 
 		//remove when release
@@ -68,17 +68,25 @@ public class DragableObject : MonoBehaviour {
 		if (keyToDrag != KeyCode.None && Input.GetKey (keyToDrag)==false) {
 			return;
 		}
-
+		
 		//Debug.Log ("on drag: " + v);
 		if (isDragFirst) {
 			isDragFirst = false;
 			Vector3 curPos = transform.position; //world
 			Vector2 touchPos = UICamera.current.camera.ScreenToWorldPoint (UICamera.lastTouchPosition); //world
-			offset = new Vector2 (touchPos.x - curPos.x, touchPos.y - curPos.y); //world
+			
+			lastTouchPosition = touchPos; //save last touch
+			lastPosition = curPos;
 		}
-
+		
 		Vector2 vec = UICamera.lastTouchPosition;
-		Vector3 newpos= UICamera.current.camera.ScreenToWorldPoint(new Vector3(vec.x,vec.y,0));
-		transform.position = new Vector3 (newpos.x-offset.x, newpos.y-offset.y, newpos.z);
+		Vector3 newTouchPosition = UICamera.current.camera.ScreenToWorldPoint(new Vector3(vec.x,vec.y,0));
+		
+		Vector3 deltaTouch = new Vector3 (newTouchPosition.x - lastTouchPosition.x, newTouchPosition.y - lastTouchPosition.y, 0);
+		deltaTouch.x *= Main.Instance.ObjCamera.orthographicSize;
+		deltaTouch.y *= Main.Instance.ObjCamera.orthographicSize;
+		Vector3 newPos = new Vector3 (lastPosition.x + deltaTouch.x, lastPosition.y + deltaTouch.y, lastPosition.z);
+		
+		transform.position = newPos;
 	}
 }

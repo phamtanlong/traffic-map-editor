@@ -7,6 +7,11 @@ using Pathfinding.Serialization.JsonFx;
 public class Main : MonoBehaviour {
 
 	public static Main Instance;
+	
+	public Camera DialogCamera;
+	public Camera UICamera;
+	public Camera ObjCamera;
+
 	public UILabel log;
 
 	void Awake () {
