@@ -176,8 +176,8 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.name = ""+newTileId;
 			gt.gameObject.AddComponent (typeof (EventTransfer));
 			gt.gameObject.GetComponent <EventTransfer>().onScroll = this.OnScroll;
-			gt.gameObject.GetComponent <EventTransfer>().onPress = this.GetComponent<DragableObject>().OnPress;
-			gt.gameObject.GetComponent <EventTransfer>().onDrag = this.GetComponent<DragableObject>().OnDrag;
+			gt.gameObject.GetComponent <EventTransfer>().onPress = this.GetComponent<DragableCamera>().OnPress;
+			gt.gameObject.GetComponent <EventTransfer>().onDrag = this.GetComponent<DragableCamera>().OnDrag;
 
 			GridLayerHandler l = gameObject.GetComponent<DrawPanelHandler>().dictLayers[layerId];
 			
