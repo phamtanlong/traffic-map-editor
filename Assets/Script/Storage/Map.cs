@@ -9,7 +9,7 @@ public class Map {
 	
 	public Map () {
 		name = "Map";
-		width = 120; //1280
-		height = 120; //768
+		width = 40; //1280
+		height = 40; //768
 	}
 }

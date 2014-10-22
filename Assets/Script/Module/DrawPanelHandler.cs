@@ -13,6 +13,8 @@ public class DrawPanelHandler : MonoBehaviour {
 	public KeyCode keyToDrag = KeyCode.Space;
 
 	public UISprite grid;
+	public GameObject parentLayer;
+	public GameObject tempParent;
 	public GameObject prefabGridLayer;
 	public float scaleSpeed;
 	public float minScale;
@@ -44,8 +46,13 @@ public class DrawPanelHandler : MonoBehaviour {
 	}
 
 	public void SetSize (int w, int h) {
+		//parentLayer.transform.parent = tempParent.transform;
+		//grid.pivot = UIWidget.Pivot.TopLeft;
+
 		grid.width = GameConst.TILE_WIDTH * w;
 		grid.height = GameConst.TILE_HEIGHT * h;
+
+		//parentLayer.transform.parent = grid.transform;
 	}
 
 	public void Reset (int w, int h) {
@@ -61,7 +68,7 @@ public class DrawPanelHandler : MonoBehaviour {
 	public void NewLayer (Layer l) {
 		GameObject ins = GameObject.Instantiate (prefabGridLayer) as GameObject;
 		ins.name = ""+l.id;
-		ins.transform.parent = grid.transform;
+		ins.transform.parent = parentLayer.transform;
 		ins.transform.localScale = Vector3.one;
 		ins.transform.localPosition = Vector3.zero;
 		ins.gameObject.GetComponent<UIWidget>().depth = l.id;
@@ -110,7 +117,8 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	#region DRAW
 
-	void OnScroll (float delta) { 
+	void OnScroll (float delta) {
+		delta *= -1;
 
 		float s = camera.orthographicSize;
 		s = s + delta * scaleSpeed;

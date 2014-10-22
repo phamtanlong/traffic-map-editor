@@ -90,6 +90,16 @@ public class Main : MonoBehaviour {
 					break;
 				}
 			}
+
+			Vector3 campos = new Vector3 ();
+			campos.x = float.Parse (state["cam_x"].ToString ());
+			campos.y = float.Parse (state["cam_y"].ToString ());
+			campos.z = float.Parse (state["cam_z"].ToString ());
+
+			float camera_size = float.Parse (state["cam_size"].ToString ());
+			ObjCamera.transform.localPosition = campos;
+			ObjCamera.orthographicSize = camera_size;
+
 		}
 	}
 
@@ -144,6 +154,11 @@ public class Main : MonoBehaviour {
 		state["step"] = DragableObject1.step.x;
 		//layer
 		state["current_layer"] = ExplorerHandler.SelectedLayer.layer.id;
+		//camera
+		state["cam_x"] = ObjCamera.transform.localPosition.x;
+		state["cam_y"] = ObjCamera.transform.localPosition.y;
+		state["cam_z"] = ObjCamera.transform.localPosition.z;
+		state["cam_size"] = ObjCamera.orthographicSize;
 		//-------------------------
 		total["state"] = state;
 
