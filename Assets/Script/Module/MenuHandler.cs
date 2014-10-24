@@ -13,7 +13,9 @@ public class MenuHandler : MonoBehaviour {
 
 	void Start () {
 		objMenuPanel.SetActive (isShowMenu);
+#if !UNITY_WEBPLAYER
 		UniFileBrowser.use.SendWindowCloseMessage(CloseWindowCallback);
+#endif
 	}
 	
 	public void OnShowHideMenu () {
@@ -25,12 +27,20 @@ public class MenuHandler : MonoBehaviour {
 		switch (popFile.value) {
 		case "Open":
 			DialogHandler.Instance.dialogBackground.SetActive (true);
+#if UNITY_WEBPLAYER
+			Application.ExternalCall( "ImportJSON", "The game says hello!" );
+#else
 			UniFileBrowser.use.OpenFileWindow (OpenFileCallback);
+#endif
 			break;
 
 		case "Save":
 			DialogHandler.Instance.dialogBackground.SetActive (true);
+#if UNITY_WEBPLAYER
+			SaveFile2 ();
+#else
 			UniFileBrowser.use.SaveFileWindow (SaveFileCallback);
+#endif
 			break;
 
 		case "Exit":
@@ -55,20 +65,34 @@ public class MenuHandler : MonoBehaviour {
 		DialogHandler.Instance.dialogBackground.SetActive (false);
 	}
 
+#if UNITY_WEBPLAYER
+
+	public void OpenFileCallback2 (string s) {
+		DialogHandler.Instance.dialogBackground.SetActive (false);
+		Main.Instance.Import (s);
+	}
+
+	public void SaveFile2 () {
+		DialogHandler.Instance.dialogBackground.SetActive (false);
+		string s = Main.Instance.Export ();
+		Application.ExternalCall( "ExportJSON", s );
+	}
+
+#else
+
 	private void OpenFileCallback (string pathToFile) {
 		Main.Instance.log.text = pathToFile;
 		string s = File.ReadAllText (pathToFile);
-		Main.Instance.log.text = s;
-
+		Main.Instance.log.text = pathToFile;
 		Main.Instance.Import (s);
 	}
 
 	private void SaveFileCallback (string pathToFile) {
 		Main.Instance.log.text = pathToFile;
-
 		string s = Main.Instance.Export ();
-
 		File.WriteAllText (pathToFile, s);
 		Main.Instance.log.text = "Write completed!";
 	}
+
+#endif
 }

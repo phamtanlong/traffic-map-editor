@@ -115,25 +115,25 @@ public class DrawPanelHandler : MonoBehaviour {
 		InspectorHandler.Instance.SetSelectedTile (DrawPanelHandler.Instance.SelectedGridTile.tile);
 	}
 
-	#region DRAW
-
+	#region SCROLL
+	
 	void OnScroll (float delta) {
 		delta *= -1;
-
+		
 		float s = camera.orthographicSize;
 		s = s + delta * scaleSpeed;
-
-		if (s < 0.2f) {
-			s = 0.2f;
+		
+		if (s < minScale) {
+			s = minScale;
 		}
-
-		if (s > 4.0f) {
-			s = 4.0f;
+		
+		if (s > maxScale) {
+			s = maxScale;
 		}
-
+		
 		Main.Instance.log.text = "Scale " + s;
 		camera.orthographicSize = s;
-
+		
 		if (s <= 1.0f) {
 			grid.spriteName = "tile128";
 		} else if (s <= 2.0f) {
@@ -142,6 +142,10 @@ public class DrawPanelHandler : MonoBehaviour {
 			grid.spriteName = "tile512";
 		}
 	}
+
+	#endregion
+
+	#region DRAW
 
 	void OnClick () {
 		bool isDrag = Input.GetKey (keyToDrag);
