@@ -15,8 +15,8 @@ public class Ultil {
 		return layerId;
 	}
 
-	public static void ResetObjId () {
-		objId = 0;
+	public static void ResetObjId (int defaultId = 0) {
+		objId = defaultId;
 	}
 	public static int GetNewObjId () {
 		objId++;

@@ -9,6 +9,8 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	public GridTileHandler SelectedGridTile = null;
 
+	public GridTileHandler CopiedGridTile = null;
+
 	public Camera camera;
 	public KeyCode keyToDrag = KeyCode.Space;
 
@@ -43,12 +45,36 @@ public class DrawPanelHandler : MonoBehaviour {
 				}
 			}
 		}
+		
+		if (InspectorHandler.IsFocus == false) {
+			if (Input.GetKeyUp (KeyCode.C)) {
+				if (SelectedGridTile != null) {
+					CopiedGridTile = SelectedGridTile;
+					Main.Instance.log.text = "Copy: " + CopiedGridTile.gameObject.name;
+				}
+			}
+
+			if (Input.GetKeyUp (KeyCode.V)) {
+				if (CopiedGridTile != null && Global.currentLayer.type == CopiedGridTile.tile.layerType) {
+					//AddNewObject (Vector2 pos, int newTileId, TileHandler tileHandler, Tile tile, int layerId)
+
+					Tile tile = CopiedGridTile.tile.Copy ();
+					Vector3 oldpos = CopiedGridTile.transform.localPosition;
+					Vector3 newpos = new Vector3 (oldpos.x+16, oldpos.y+16, oldpos.z);
+					int newTileId = Ultil.GetNewObjId ();
+					TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (tile.typeId);
+
+					GridTileHandler gt = AddNewObject (newpos, newTileId, tilehandler, tile, Global.currentLayer.id);
+
+					if (gt != null) {
+						Main.Instance.log.text = "Paste: " + gt.gameObject.name;
+					}
+				}
+			}
+		}
 	}
 
 	public void SetSize (int w, int h) {
-		//parentLayer.transform.parent = tempParent.transform;
-		//grid.pivot = UIWidget.Pivot.TopLeft;
-
 		grid.width = GameConst.TILE_WIDTH * w;
 		grid.height = GameConst.TILE_HEIGHT * h;
 
@@ -160,7 +186,7 @@ public class DrawPanelHandler : MonoBehaviour {
 		}
 	}
 
-	public void AddNewObject (Vector2 pos, int newTileId, TileHandler tileHandler, Tile tile, int layerId) {
+	public GridTileHandler AddNewObject (Vector2 pos, int newTileId, TileHandler tileHandler, Tile tile, int layerId) {
 		if (tileHandler != null && layerId > 0) {
 			
 			GridLayerHandler d = null;
@@ -168,11 +194,11 @@ public class DrawPanelHandler : MonoBehaviour {
 
 			if (tile.layerType != d.layer.type) {
 				Main.Instance.log.text = "Choose layer-type correctly!";
-				return;
+				return null;
 			}
 			
 			if (d == null) { //no layer
-				return;
+				return null;
 			}
 
 			TileHandler ins = GameObject.Instantiate (tileHandler) as TileHandler;
@@ -198,7 +224,11 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.transform.localScale = Vector2.one;
 
 			dictLayers[layerId].dictTiles[newTileId] = gt;
+
+			return gt;
 		}
+
+		return null;
 	}
 
 	#endregion

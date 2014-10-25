@@ -21,6 +21,7 @@ public class Tile {
 		t.objId = this.objId;
 		t.typeId = this.typeId;
 		t.layerType = this.layerType;
+	
 		foreach (KeyValuePair<string, string> p in this.properties) {
 			t.properties[p.Key] = p.Value;
 		}

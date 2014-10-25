@@ -14,7 +14,6 @@ public class GridTileHandler : MonoBehaviour {
 	public void Select (bool select) {
 		isSelected = select;
 		if (select) {
-			Debug.Log ("RED");
 			GetComponent<UITexture>().color = new Color (1.0f,0.5f,0.5f,1);
 		} else {
 			GetComponent<UITexture>().color = Color.white;
@@ -33,7 +32,6 @@ public class GridTileHandler : MonoBehaviour {
 		}
 		
 		DrawPanelHandler.Instance.OnChangeSelectedTile ();
-		Debug.Log ("On Click: " + tile.objId + ": "+ isSelected);
 	}
 
 	public void Init (TileHandler ins, long newTileId) {

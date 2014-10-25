@@ -24,6 +24,8 @@ public class ToolboxHandler : MonoBehaviour {
 		for (int i = 0; i < panels.Length; ++i) {
 			panels[i].Init ();
 		}
+
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.Road);
 	}
 	void Update () {}
 
@@ -43,6 +45,10 @@ public class ToolboxHandler : MonoBehaviour {
 	}
 
 	public void OnSelectedLayerChange () {
+		if (Global.currentLayer == null) {
+			return;
+		}
+
 		switch (Global.currentLayer.type) {
 		case LayerType.Road:
 			tabs[0].value = true;

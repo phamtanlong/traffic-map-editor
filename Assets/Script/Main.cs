@@ -63,6 +63,9 @@ public class Main : MonoBehaviour {
 					ToolboxHandler.Instance.SelectedTile = tilehandler;
 					Global.currentTile = tilehandler.tile;
 					DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, t, layerId);
+
+					//Increase Unique Tile Id
+					Ultil.ResetObjId (t.objId);
 				}
 			}
 		} else {
