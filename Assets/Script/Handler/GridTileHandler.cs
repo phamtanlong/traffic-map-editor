@@ -12,7 +12,9 @@ public class GridTileHandler : MonoBehaviour {
 	bool isSelected = false;
 
 	public void Select (bool select) {
+		isSelected = select;
 		if (select) {
+			Debug.Log ("RED");
 			GetComponent<UITexture>().color = new Color (1.0f,0.5f,0.5f,1);
 		} else {
 			GetComponent<UITexture>().color = Color.white;
@@ -22,16 +24,16 @@ public class GridTileHandler : MonoBehaviour {
 	void OnClick () {
 		if (isSelected == false) {
 			isSelected = true;
+			Select (true);
 
 			if (DrawPanelHandler.Instance.SelectedGridTile != null) {
 				DrawPanelHandler.Instance.SelectedGridTile.Select (false);
 			}
 			DrawPanelHandler.Instance.SelectedGridTile = this;
-			DrawPanelHandler.Instance.SelectedGridTile.Select (true);
-			DrawPanelHandler.Instance.OnChangeSelectedTile ();
-		} else {
-			isSelected = false;
 		}
+		
+		DrawPanelHandler.Instance.OnChangeSelectedTile ();
+		Debug.Log ("On Click: " + tile.objId + ": "+ isSelected);
 	}
 
 	public void Init (TileHandler ins, long newTileId) {

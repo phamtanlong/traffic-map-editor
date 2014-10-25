@@ -10,9 +10,6 @@ public class ExplorerHandler : MonoBehaviour {
 	}
 
 	void Start () {
-//		CreateNewLayer (LayerType.Road);
-//		CreateNewLayer (LayerType.Sign);
-//		CreateNewLayer (LayerType.View);
 	}
 	
 	public static List<LayerHandler> listLayer = new List<LayerHandler> ();
@@ -50,6 +47,7 @@ public class ExplorerHandler : MonoBehaviour {
 		
 		parent.AddChild (l.transform);
 		parent.Reposition ();
+		scrollView.Scroll (0.01f);
 		
 		SetSelectedLayer (l);
 		

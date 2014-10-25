@@ -18,38 +18,48 @@ public class InspectorHandler : MonoBehaviour {
 	public Tile SelectedTile = null;
 
 	public UIInput inpInfo;
+	public RoadInspector roadInspector;
+	public SignInspector signInspector;
+	public ViewInspector viewInspector;
 
 	void Start () {}
 	void Update () {}
 
 	public void SetSelectedTile (Tile t) {
 		SelectedTile = t;
-		string s = "";
-		foreach (KeyValuePair<string, string> p in SelectedTile.properties) {
-			s += p.Key + "=" + p.Value + "\n";
+
+		switch (t.layerType) {
+		case LayerType.Road:
+			roadInspector.Init (t);
+			roadInspector.gameObject.SetActive (true);
+			break;
+
+		case LayerType.Sign:
+			signInspector.Init (t);
+			signInspector.gameObject.SetActive (true);
+			break;
+
+		case LayerType.View:
+			viewInspector.Init (t);
+			viewInspector.gameObject.SetActive (true);
+			break;
+
 		}
-		inpInfo.value = s;
 	}
 
 	public void OnSave () {
-		string s = inpInfo.value;
+		switch (SelectedTile.layerType) {
+		case LayerType.Road:
+			roadInspector.Save ();
+			break;
 
-		Dictionary<string, string> dict = new Dictionary<string, string> ();
-		bool isOK = true;
+		case LayerType.Sign:
+			signInspector.Save ();
+			break;
 
-		string[] ss = s.Split ('\n');
-		for (int i = 0; i < ss.Length; ++i) {
-			string[] sss = ss[i].Split ('=');
-			if (sss.Length == 2 && sss[0].Length > 0 && sss[1].Length > 0) {
-				dict[sss[0]] = sss[1];
-			} else {
-				isOK = false;
-				DialogHandler.Instance.ShowDialogMessage ("Error", "Format is not valid :(");
-			}
-		}
-
-		if (isOK) {
-			SelectedTile.properties = dict;
+		case LayerType.View:
+			viewInspector.Save ();
+			break;
 		}
 	}
 }
