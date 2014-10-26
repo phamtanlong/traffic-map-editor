@@ -60,7 +60,7 @@ public class GridTileHandler : MonoBehaviour {
 			depth = VIEW_DEPTH;
 			break;
 		case LayerType.Other:
-			depth = ROAD_DEPTH;
+			depth = SIGN_DEPTH;
 			break;
 		}
 		depth += newTileId;

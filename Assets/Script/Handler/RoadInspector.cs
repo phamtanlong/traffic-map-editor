@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class RoadInspector : IInspector {
 	
-	public const int STEP_RESIZE = 128;
+	public const int STEP_RESIZE = 64;
 
 	public UILabel lbID;
 	public UIPopupList popChieu;
@@ -60,7 +60,7 @@ public class RoadInspector : IInspector {
 		this.gridtile = gridtile;
 
 		//Id
-		lbID.text = "[ff0000]" + gridtile.tile.objId + "[-] :ID";
+		lbID.text = ""+gridtile.tile.objId;
 
 		//Coi
 		bool isCoi = Boolean.Parse (Ultil.GetString (TileKey.COI, "true", gridtile.tile.properties));

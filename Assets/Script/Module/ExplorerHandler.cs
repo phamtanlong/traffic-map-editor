@@ -106,6 +106,10 @@ public class ExplorerHandler : MonoBehaviour {
 		case "+View":
 			CreateNewLayer (LayerType.View);
 			break;
+			
+		case "+Other":
+			CreateNewLayer (LayerType.Other);
+			break;
 		}
 	}
 	

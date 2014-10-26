@@ -32,6 +32,13 @@ public struct TileKey {
 	public static string LOAI_XE = "LOAI_XE";
 	public static string DI = "DI_";
 	public static string DUNG = "DUNG_";
+
+	//Light
+
+	public static string LIGHT_GROUP_ID = "LIGHT_GROUP_ID";
+	public static string LIGHT_HUONG = "LIGHT_HUONG";
+	public static string LIGHT_LAN_DUONG = "LIGHT_LAN_DUONG";
+
 }
 
 public class IInspector : MonoBehaviour {

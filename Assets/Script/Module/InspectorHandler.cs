@@ -18,56 +18,56 @@ public class InspectorHandler : MonoBehaviour {
 	public GridTileHandler SelectedTile = null;
 
 	public UIInput inpInfo;
+
 	public RoadInspector roadInspector;
 	public SignInspector signInspector;
 	public ViewInspector viewInspector;
+	public LightInspector lightInspector;
+	
+	private IInspector currentInspector = null;
 
 	void Start () {
+		currentInspector = null;
+
 		roadInspector.gameObject.SetActive (false);
 		signInspector.gameObject.SetActive (false);
 		viewInspector.gameObject.SetActive (false);
+		lightInspector.gameObject.SetActive (false);
 	}
 	void Update () {}
 
 	public void SetSelectedTile (GridTileHandler t) {
 		SelectedTile = t;
 
-		roadInspector.gameObject.SetActive (false);
-		signInspector.gameObject.SetActive (false);
-		viewInspector.gameObject.SetActive (false);
+		if (currentInspector != null) {
+			currentInspector.gameObject.SetActive (false);
+		}
 
 		switch (t.tile.layerType) {
 		case LayerType.Road:
-			roadInspector.Init (t);
-			roadInspector.gameObject.SetActive (true);
+			currentInspector = roadInspector;
 			break;
 
 		case LayerType.Sign:
-			signInspector.Init (t);
-			signInspector.gameObject.SetActive (true);
+			currentInspector = signInspector;
 			break;
 
 		case LayerType.View:
-			viewInspector.Init (t);
-			viewInspector.gameObject.SetActive (true);
+			currentInspector = viewInspector;
 			break;
 
+		case LayerType.Other:
+			currentInspector = lightInspector;
+			break;
 		}
+		
+		currentInspector.gameObject.SetActive (true);
+		currentInspector.Init (t);
 	}
 
 	public void OnSave () {
-		switch (SelectedTile.tile.layerType) {
-		case LayerType.Road:
-			roadInspector.Save ();
-			break;
-
-		case LayerType.Sign:
-			signInspector.Save ();
-			break;
-
-		case LayerType.View:
-			viewInspector.Save ();
-			break;
+		if (currentInspector != null) {
+			currentInspector.Save ();
 		}
 	}
 }
