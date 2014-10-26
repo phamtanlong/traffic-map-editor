@@ -36,7 +36,7 @@ public struct TileKey {
 
 public class IInspector : MonoBehaviour {
 
-	public Tile tile;
+	public GridTileHandler gridtile;
 
 	void Start () {}
 
@@ -44,5 +44,5 @@ public class IInspector : MonoBehaviour {
 
 	public virtual void Save () {}
 
-	public virtual void Init (Tile tile) {}
+	public virtual void Init (GridTileHandler gridtile) {}
 }

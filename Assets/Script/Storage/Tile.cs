@@ -10,6 +10,8 @@ public class Tile {
 	public LayerType layerType;
 	public float x;
 	public float y;
+	public float w;
+	public float h;
 	public Dictionary<string, string> properties;
 
 	public Tile () {
@@ -21,6 +23,10 @@ public class Tile {
 		t.objId = this.objId;
 		t.typeId = this.typeId;
 		t.layerType = this.layerType;
+		t.x = x;
+		t.y = y;
+		t.w = w;
+		t.h = h;
 	
 		foreach (KeyValuePair<string, string> p in this.properties) {
 			t.properties[p.Key] = p.Value;

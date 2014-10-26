@@ -62,7 +62,14 @@ public class Main : MonoBehaviour {
 					
 					ToolboxHandler.Instance.SelectedTile = tilehandler;
 					Global.currentTile = tilehandler.tile;
-					DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, t, layerId);
+					GridTileHandler gt = DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, t, layerId);
+
+					UITexture tt = gt.GetComponent<UITexture> ();
+					tt.width = (int)t.w;
+					tt.height = (int)t.h;
+
+					BoxCollider box = gt.GetComponent<BoxCollider> ();
+					box.size = new Vector3 (tt.width, tt.height, 0);
 
 					//Increase Unique Tile Id
 					Ultil.ResetObjId (t.objId);
@@ -77,6 +84,7 @@ public class Main : MonoBehaviour {
 		if (state != null) {
 			float x = float.Parse (state["x"].ToString());
 			float y = float.Parse (state["y"].ToString());
+
 			float scale = float.Parse (state["scale"].ToString());
 			float step = float.Parse (state["step"].ToString());
 			int current_layer = int.Parse(state["current_layer"].ToString());
@@ -136,6 +144,8 @@ public class Main : MonoBehaviour {
 			foreach (GridTileHandler g in p.Value.dictTiles.Values) {
 				g.tile.x = g.transform.localPosition.x;
 				g.tile.y = g.transform.localPosition.y;
+				g.tile.w = g.GetComponent<UITexture>().width;
+				g.tile.h = g.GetComponent<UITexture>().height;
 
 				tiles[g.tile.objId] = g.tile;
 			}
@@ -181,6 +191,9 @@ public class Main : MonoBehaviour {
 
 	public void NewMap () {
 		Reset ();
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.Other);
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.View);
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.Sign);
 		ExplorerHandler.Instance.CreateNewLayer (LayerType.Road);
 	}
 

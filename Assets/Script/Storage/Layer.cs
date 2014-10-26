@@ -4,7 +4,8 @@ using System.Collections;
 public enum LayerType {
 	Road,
 	Sign,
-	View
+	View,
+	Other
 }
 
 [System.Serializable]

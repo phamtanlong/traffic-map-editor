@@ -24,7 +24,10 @@ public class ToolboxHandler : MonoBehaviour {
 		for (int i = 0; i < panels.Length; ++i) {
 			panels[i].Init ();
 		}
-
+		
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.Other);
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.View);
+		ExplorerHandler.Instance.CreateNewLayer (LayerType.Sign);
 		ExplorerHandler.Instance.CreateNewLayer (LayerType.Road);
 	}
 	void Update () {}
@@ -61,6 +64,11 @@ public class ToolboxHandler : MonoBehaviour {
 		case LayerType.View:
 			tabs[2].value = true;
 			break;
+
+		case LayerType.Other:
+			tabs[3].value = true;
+			break;
+
 		}
 	}
 }

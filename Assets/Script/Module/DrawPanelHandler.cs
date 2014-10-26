@@ -138,7 +138,7 @@ public class DrawPanelHandler : MonoBehaviour {
 	}
 
 	public void OnChangeSelectedTile () {
-		InspectorHandler.Instance.SetSelectedTile (DrawPanelHandler.Instance.SelectedGridTile.tile);
+		InspectorHandler.Instance.SetSelectedTile (DrawPanelHandler.Instance.SelectedGridTile);
 	}
 
 	#region SCROLL

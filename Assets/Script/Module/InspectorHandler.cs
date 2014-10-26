@@ -15,20 +15,28 @@ public class InspectorHandler : MonoBehaviour {
 	}
 
 	[HideInInspector]
-	public Tile SelectedTile = null;
+	public GridTileHandler SelectedTile = null;
 
 	public UIInput inpInfo;
 	public RoadInspector roadInspector;
 	public SignInspector signInspector;
 	public ViewInspector viewInspector;
 
-	void Start () {}
+	void Start () {
+		roadInspector.gameObject.SetActive (false);
+		signInspector.gameObject.SetActive (false);
+		viewInspector.gameObject.SetActive (false);
+	}
 	void Update () {}
 
-	public void SetSelectedTile (Tile t) {
+	public void SetSelectedTile (GridTileHandler t) {
 		SelectedTile = t;
 
-		switch (t.layerType) {
+		roadInspector.gameObject.SetActive (false);
+		signInspector.gameObject.SetActive (false);
+		viewInspector.gameObject.SetActive (false);
+
+		switch (t.tile.layerType) {
 		case LayerType.Road:
 			roadInspector.Init (t);
 			roadInspector.gameObject.SetActive (true);
@@ -48,7 +56,7 @@ public class InspectorHandler : MonoBehaviour {
 	}
 
 	public void OnSave () {
-		switch (SelectedTile.layerType) {
+		switch (SelectedTile.tile.layerType) {
 		case LayerType.Road:
 			roadInspector.Save ();
 			break;

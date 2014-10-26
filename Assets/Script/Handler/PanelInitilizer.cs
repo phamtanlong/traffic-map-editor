@@ -1,6 +1,8 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+
 
 public class PanelInitilizer : MonoBehaviour {
 
@@ -14,6 +16,8 @@ public class PanelInitilizer : MonoBehaviour {
 		VerticalGridView grid = this.GetComponent <VerticalGridView> ();
 
 		Texture[] texes = Resources.LoadAll<Texture>(folder);
+		Array.Sort <Texture> (texes, CompareTextureName);
+
 		foreach(Texture t in texes)
 		{
 			GameObject go = GameObject.Instantiate (prefab) as GameObject;
@@ -34,6 +38,13 @@ public class PanelInitilizer : MonoBehaviour {
 			//Add to ToolboxHandler
 			ToolboxHandler.Instance.AddTileHandler (handler);
 		}
+	}
+
+	private static int CompareTextureName(Texture x, Texture y) {
+		int xx = int.Parse (x.name);
+		int yy = int.Parse (y.name);
+
+		return xx - yy;
 	}
 
 }

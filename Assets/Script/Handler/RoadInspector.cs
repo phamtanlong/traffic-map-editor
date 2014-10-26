@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public class RoadInspector : IInspector {
+	
+	public const int STEP_RESIZE = 128;
 
+	public UILabel lbID;
 	public UIPopupList popChieu;
 	public UIToggle cbCoi;
 	public UIInput inpTocDoMin;
@@ -23,57 +26,60 @@ public class RoadInspector : IInspector {
 	void Update () {}
 
 	public override void Save () {
-		Debug.Log ("save");
+
 		//Coi
-		tile.properties[TileKey.COI] = "" + cbCoi.value;
+		gridtile.tile.properties[TileKey.COI] = "" + cbCoi.value;
 
 		//Chieu
-		tile.properties[TileKey.CHIEU] = popChieu.value;
+		gridtile.tile.properties[TileKey.CHIEU] = popChieu.value;
 
 		//Velocity
-		tile.properties[TileKey.MIN_VEL] = inpTocDoMin.value;
-		tile.properties[TileKey.MAX_VEL] = inpTocDoMax.value;
+		gridtile.tile.properties[TileKey.MIN_VEL] = inpTocDoMin.value;
+		gridtile.tile.properties[TileKey.MAX_VEL] = inpTocDoMax.value;
 
 		//Huong Re
-		tile.properties[TileKey.RE_TRAI] = ""+cbReTrai.value;
-		tile.properties[TileKey.RE_PHAI] = ""+cbRePhai.value;
-		tile.properties[TileKey.RE_THANG] = ""+cbReThang.value;
+		gridtile.tile.properties[TileKey.RE_TRAI] = ""+cbReTrai.value;
+		gridtile.tile.properties[TileKey.RE_PHAI] = ""+cbRePhai.value;
+		gridtile.tile.properties[TileKey.RE_THANG] = ""+cbReThang.value;
 
 		//Loai Xe
 		for (int i = 0; i < cbLoaiXe.listItems.Count; ++i) {
 			ComboCheckboxItem item = cbLoaiXe.listItems[i];
 
-			tile.properties[TileKey.DI + item.lbTitle.text] = ""+item.Check1;
-			tile.properties[TileKey.DUNG + item.lbTitle.text] = ""+item.Check2;
+			gridtile.tile.properties[TileKey.DI + item.lbTitle.text] = ""+item.Check1;
+			gridtile.tile.properties[TileKey.DUNG + item.lbTitle.text] = ""+item.Check2;
 		}
 	}
 
-	public override void Init (Tile tile) {
-		if (tile.layerType != LayerType.Road) {
+	public override void Init (GridTileHandler gridtile) {
+		if (gridtile.tile.layerType != LayerType.Road) {
 			Debug.Log ("Wrong tile");
 			return;
 		}
 
-		this.tile = tile;
+		this.gridtile = gridtile;
+
+		//Id
+		lbID.text = "[ff0000]" + gridtile.tile.objId + "[-] :ID";
 
 		//Coi
-		bool isCoi = Boolean.Parse (Ultil.GetString (TileKey.COI, "true", tile.properties));
+		bool isCoi = Boolean.Parse (Ultil.GetString (TileKey.COI, "true", gridtile.tile.properties));
 		cbCoi.value = isCoi;
 
 		//Chieu
-		string dir = Ultil.GetString (TileKey.CHIEU, "UP", tile.properties);
+		string dir = Ultil.GetString (TileKey.CHIEU, "UP", gridtile.tile.properties);
 		popChieu.value = dir;
 
 		//Velocity
-		int minVel = int.Parse (Ultil.GetString (TileKey.MIN_VEL, "0", tile.properties));
-		int maxVel = int.Parse (Ultil.GetString (TileKey.MAX_VEL, "40", tile.properties));
+		int minVel = int.Parse (Ultil.GetString (TileKey.MIN_VEL, "0", gridtile.tile.properties));
+		int maxVel = int.Parse (Ultil.GetString (TileKey.MAX_VEL, "40", gridtile.tile.properties));
 		inpTocDoMin.value = ""+minVel;
 		inpTocDoMax.value = ""+maxVel;
 
 		//Huong Re
-		bool isReTrai = Boolean.Parse (Ultil.GetString (TileKey.RE_TRAI, "true", tile.properties));
-		bool isRePhai = Boolean.Parse (Ultil.GetString (TileKey.RE_PHAI, "true", tile.properties));
-		bool isReThang = Boolean.Parse (Ultil.GetString (TileKey.RE_THANG, "true", tile.properties));
+		bool isReTrai = Boolean.Parse (Ultil.GetString (TileKey.RE_TRAI, "true", gridtile.tile.properties));
+		bool isRePhai = Boolean.Parse (Ultil.GetString (TileKey.RE_PHAI, "true", gridtile.tile.properties));
+		bool isReThang = Boolean.Parse (Ultil.GetString (TileKey.RE_THANG, "true", gridtile.tile.properties));
 		cbReTrai.value = isReTrai;
 		cbRePhai.value = isRePhai;
 		cbReThang.value = isReThang;
@@ -82,12 +88,88 @@ public class RoadInspector : IInspector {
 		foreach (VihicleType val in Enum.GetValues(typeof(VihicleType)))
 		{
 			string name = Enum.GetName(typeof(VihicleType), val);
-			bool isDi = Boolean.Parse (Ultil.GetString (TileKey.DI + name, "true", tile.properties));
-			bool isDung = Boolean.Parse (Ultil.GetString (TileKey.DUNG + name, "true", tile.properties));
+			bool isDi = Boolean.Parse (Ultil.GetString (TileKey.DI + name, "true", gridtile.tile.properties));
+			bool isDung = Boolean.Parse (Ultil.GetString (TileKey.DUNG + name, "true", gridtile.tile.properties));
 
 			listData.Add (new ComboCheckboxData (name, isDi, isDung));
 		}
 
 		cbLoaiXe.Init (listData);
 	}
+
+	#region EVENT HANDLER
+
+	public void OnResizeLeft () {
+		if (gridtile == null) return;
+
+		int step = STEP_RESIZE;
+		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
+			step *= -1;
+		}
+
+		UITexture tt = gridtile.GetComponent <UITexture> ();
+		tt.type = UIBasicSprite.Type.Simple;
+		tt.pivot = UIWidget.Pivot.Right;
+		tt.width = tt.width + step;
+		tt.pivot = UIWidget.Pivot.Center;
+
+		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
+		box.size = new Vector3 (tt.width, tt.height, 0);
+	}
+
+	public void OnResizeRight () {
+		if (gridtile == null) return;
+		
+		int step = STEP_RESIZE;
+		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
+			step *= -1;
+		}
+
+		UITexture tt = gridtile.GetComponent <UITexture> ();
+		tt.type = UIBasicSprite.Type.Simple;
+		tt.pivot = UIWidget.Pivot.Left;
+		tt.width = tt.width + step;
+		tt.pivot = UIWidget.Pivot.Center;
+		
+		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
+		box.size = new Vector3 (tt.width, tt.height, 0);
+	}
+
+	public void OnResizeTop () {
+		if (gridtile == null) return;
+		
+		int step = STEP_RESIZE;
+		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
+			step *= -1;
+		}
+
+		UITexture tt = gridtile.GetComponent <UITexture> ();
+		tt.type = UIBasicSprite.Type.Simple;
+		tt.pivot = UIWidget.Pivot.Bottom;
+		tt.height = tt.height + step;
+		tt.pivot = UIWidget.Pivot.Center;
+		
+		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
+		box.size = new Vector3 (tt.width, tt.height, 0);
+	}
+
+	public void OnResizeBottom () {
+		if (gridtile == null) return;
+		
+		int step = STEP_RESIZE;
+		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
+			step *= -1;
+		}
+
+		UITexture tt = gridtile.GetComponent <UITexture> ();
+		tt.type = UIBasicSprite.Type.Simple;
+		tt.pivot = UIWidget.Pivot.Top;
+		tt.height = tt.height + step;
+		tt.pivot = UIWidget.Pivot.Center;
+		
+		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
+		box.size = new Vector3 (tt.width, tt.height, 0);
+	}
+
+	#endregion
 }
