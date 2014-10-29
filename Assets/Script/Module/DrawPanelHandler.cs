@@ -64,7 +64,21 @@ public class DrawPanelHandler : MonoBehaviour {
 					int newTileId = Ultil.GetNewObjId ();
 					TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (tile.typeId);
 
-					GridTileHandler gt = AddNewObject (newpos, newTileId, tilehandler, tile, Global.currentLayer.id);
+					GridTileHandler gt = AddNewObject (newpos, newTileId, tilehandler, tile.Copy (), Global.currentLayer.id);
+					gt.tile = tile;
+					gt.tile.objId = newTileId;
+
+					UITexture tt = gt.GetComponent <UITexture> ();
+					tt.width = (int)gt.tile.w;
+					tt.height = (int)gt.tile.h;
+
+					Debug.Log (CopiedGridTile.tile.w);
+					Debug.Log (tile.w);
+					Debug.Log (gt.tile.w);
+					Debug.Log (tt.width);
+
+					BoxCollider box = gt.GetComponent <BoxCollider> ();
+					box.size = new Vector3 (gt.tile.w, gt.tile.h, 0);
 
 					if (gt != null) {
 						Main.Instance.log.text = "Paste: " + gt.gameObject.name;
@@ -182,7 +196,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			Vector2 v = new Vector2 (vec2.x, vec2.y);
 
 			int newTileId = Ultil.GetNewObjId ();
-			AddNewObject (v, newTileId, ToolboxHandler.Instance.SelectedTile, Global.currentTile, Global.currentLayer.id);
+			AddNewObject (v, newTileId, ToolboxHandler.Instance.SelectedTile, Global.currentTile.Copy(), Global.currentLayer.id);
 		}
 	}
 
@@ -222,6 +236,12 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.transform.parent = l.transform;
 			gt.transform.localPosition = pos;
 			gt.transform.localScale = Vector2.one;
+
+			UITexture tt = gt.GetComponent <UITexture> ();
+			gt.tile.x = gt.transform.localPosition.x;
+			gt.tile.y = gt.transform.localPosition.y;
+			gt.tile.w = tt.width;
+			gt.tile.h = tt.height;
 
 			dictLayers[layerId].dictTiles[newTileId] = gt;
 

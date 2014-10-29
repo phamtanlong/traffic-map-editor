@@ -40,6 +40,7 @@ public class MenuHandler : MonoBehaviour {
 			SaveFile2 ();
 #else
 			UniFileBrowser.use.SaveFileWindow (SaveFileCallback);
+			SaveTemp ();
 #endif
 			break;
 
@@ -89,9 +90,22 @@ public class MenuHandler : MonoBehaviour {
 
 	private void SaveFileCallback (string pathToFile) {
 		Main.Instance.log.text = pathToFile;
+
 		string s = Main.Instance.Export ();
 		File.WriteAllText (pathToFile, s);
+
+		string log = Application.dataPath + "/save" + Global.currentMap.name + System.DateTime.Now.ToShortDateString () + ".json";
+		File.WriteAllText (log, s);
+
 		Main.Instance.log.text = "Write completed!";
+	}
+
+	private void SaveTemp () {
+		string s = Main.Instance.Export ();
+		string log = Application.dataPath + "/save_" + Global.currentMap.name + "_" + System.DateTime.Now.ToShortTimeString () + ".json";
+		File.WriteAllText (log, s);
+
+		Main.Instance.log.text = log;
 	}
 
 #endif

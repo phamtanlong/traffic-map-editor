@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class RoadInspector : IInspector {
 	
-	public const int STEP_RESIZE = 64;
+	public const int STEP_RESIZE = 32;
 
 	public UILabel lbID;
 	public UIPopupList popChieu;
@@ -99,77 +99,74 @@ public class RoadInspector : IInspector {
 
 	#region EVENT HANDLER
 
-	public void OnResizeLeft () {
+	public void OnAddWidth () {
 		if (gridtile == null) return;
 
 		int step = STEP_RESIZE;
-		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
-			step *= -1;
-		}
 
 		UITexture tt = gridtile.GetComponent <UITexture> ();
-		tt.type = UIBasicSprite.Type.Simple;
-		tt.pivot = UIWidget.Pivot.Right;
 		tt.width = tt.width + step;
-		tt.pivot = UIWidget.Pivot.Center;
+		
+		gridtile.tile.x = gridtile.transform.localPosition.x;
+		gridtile.tile.y = gridtile.transform.localPosition.y;
+		gridtile.tile.w = tt.width;
+		gridtile.tile.h = tt.height;
 
 		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
 		box.size = new Vector3 (tt.width, tt.height, 0);
 	}
 
-	public void OnResizeRight () {
+	public void OnAddHieght () {
 		if (gridtile == null) return;
 		
 		int step = STEP_RESIZE;
-		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
-			step *= -1;
-		}
 
 		UITexture tt = gridtile.GetComponent <UITexture> ();
-		tt.type = UIBasicSprite.Type.Simple;
-		tt.pivot = UIWidget.Pivot.Left;
+		tt.height = tt.height + step;
+		
+		gridtile.tile.x = gridtile.transform.localPosition.x;
+		gridtile.tile.y = gridtile.transform.localPosition.y;
+		gridtile.tile.w = tt.width;
+		gridtile.tile.h = tt.height;
+
+		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
+		box.size = new Vector3 (tt.width, tt.height, 0);
+	}
+	
+	public void OnSubWidth () {
+		if (gridtile == null) return;
+		
+		int step = -STEP_RESIZE;
+		
+		UITexture tt = gridtile.GetComponent <UITexture> ();
 		tt.width = tt.width + step;
-		tt.pivot = UIWidget.Pivot.Center;
+		
+		gridtile.tile.x = gridtile.transform.localPosition.x;
+		gridtile.tile.y = gridtile.transform.localPosition.y;
+		gridtile.tile.w = tt.width;
+		gridtile.tile.h = tt.height;
 		
 		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
 		box.size = new Vector3 (tt.width, tt.height, 0);
 	}
-
-	public void OnResizeTop () {
+	
+	public void OnSubHieght () {
 		if (gridtile == null) return;
 		
-		int step = STEP_RESIZE;
-		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
-			step *= -1;
-		}
-
+		int step = -STEP_RESIZE;
+		
 		UITexture tt = gridtile.GetComponent <UITexture> ();
-		tt.type = UIBasicSprite.Type.Simple;
-		tt.pivot = UIWidget.Pivot.Bottom;
 		tt.height = tt.height + step;
-		tt.pivot = UIWidget.Pivot.Center;
+		
+		gridtile.tile.x = gridtile.transform.localPosition.x;
+		gridtile.tile.y = gridtile.transform.localPosition.y;
+		gridtile.tile.w = tt.width;
+		gridtile.tile.h = tt.height;
 		
 		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
 		box.size = new Vector3 (tt.width, tt.height, 0);
 	}
 
-	public void OnResizeBottom () {
-		if (gridtile == null) return;
-		
-		int step = STEP_RESIZE;
-		if (Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift)) {
-			step *= -1;
-		}
-
-		UITexture tt = gridtile.GetComponent <UITexture> ();
-		tt.type = UIBasicSprite.Type.Simple;
-		tt.pivot = UIWidget.Pivot.Top;
-		tt.height = tt.height + step;
-		tt.pivot = UIWidget.Pivot.Center;
-		
-		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
-		box.size = new Vector3 (tt.width, tt.height, 0);
-	}
 
 	#endregion
 }
