@@ -94,18 +94,17 @@ public class MenuHandler : MonoBehaviour {
 		string s = Main.Instance.Export ();
 		File.WriteAllText (pathToFile, s);
 
-		string log = Application.dataPath + "/save" + Global.currentMap.name + System.DateTime.Now.ToShortDateString () + ".json";
-		File.WriteAllText (log, s);
-
 		Main.Instance.log.text = "Write completed!";
 	}
 
 	private void SaveTemp () {
+#if ! UNITY_EDITOR
 		string s = Main.Instance.Export ();
-		string log = Application.dataPath + "/save_" + Global.currentMap.name + "_" + System.DateTime.Now.ToShortTimeString () + ".json";
+		string log = Application.dataPath + "/save_" + Global.currentMap.name + "_" + System.DateTime.Now.Hour + "h_" + System.DateTime.Now.Minute + "m.json";
 		File.WriteAllText (log, s);
-
+		
 		Main.Instance.log.text = log;
+#endif
 	}
 
 #endif
