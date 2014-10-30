@@ -39,6 +39,10 @@ public struct TileKey {
 	public static string LIGHT_HUONG = "LIGHT_HUONG";
 	public static string LIGHT_LAN_DUONG = "LIGHT_LAN_DUONG";
 
+	//Sign
+
+	public static string SIGN_DIR = "SIGN_DIR";
+
 }
 
 public class IInspector : MonoBehaviour {
