@@ -57,12 +57,12 @@ public class Main : MonoBehaviour {
 					Tile t = JsonReader.Deserialize<Tile> (JsonWriter.Serialize (p2.Value));
 					
 					Vector2 v = new Vector2 (t.x, t.y);
-					TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (t.typeId);
-					tilehandler.tile = t;
+					//TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (t.typeId);
+					//tilehandler.tile = t;
 					
-					ToolboxHandler.Instance.SelectedTile = tilehandler;
-					Global.currentTile = tilehandler.tile;
-					GridTileHandler gt = DrawPanelHandler.Instance.AddNewObject (v, t.objId, tilehandler, t, layerId);
+					//ToolboxHandler.Instance.SelectedTile = tilehandler;
+					Global.currentTile = t;
+					GridTileHandler gt = DrawPanelHandler.Instance.AddNewObject (v, t.objId, t, layerId);
 
 					UITexture tt = gt.GetComponent<UITexture> ();
 					tt.width = (int)t.w;
@@ -146,6 +146,8 @@ public class Main : MonoBehaviour {
 				g.tile.y = g.transform.localPosition.y;
 				g.tile.w = g.GetComponent<UITexture>().width;
 				g.tile.h = g.GetComponent<UITexture>().height;
+
+				g.InitDefaultTileData ();
 
 				tiles[g.tile.objId] = g.tile;
 			}

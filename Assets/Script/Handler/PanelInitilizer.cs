@@ -15,10 +15,9 @@ public class PanelInitilizer : MonoBehaviour {
 	public void Init () {
 		VerticalGridView grid = this.GetComponent <VerticalGridView> ();
 
-		Texture[] texes = Resources.LoadAll<Texture>(folder);
-		Array.Sort <Texture> (texes, CompareTextureName);
+		Dictionary<string, Texture> dict = TileManager.Instance.GetFolder (folder);
 
-		foreach(Texture t in texes)
+		foreach(Texture t in dict.Values)
 		{
 			GameObject go = GameObject.Instantiate (prefab) as GameObject;
 			go.name = t.name;
@@ -39,12 +38,4 @@ public class PanelInitilizer : MonoBehaviour {
 			ToolboxHandler.Instance.AddTileHandler (handler);
 		}
 	}
-
-	private static int CompareTextureName(Texture x, Texture y) {
-		int xx = int.Parse (x.name);
-		int yy = int.Parse (y.name);
-
-		return xx - yy;
-	}
-
 }

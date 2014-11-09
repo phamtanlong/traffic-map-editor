@@ -32,6 +32,10 @@ public struct TileKey {
 	public static string LOAI_XE = "LOAI_XE";
 	public static string DI = "DI_";
 	public static string DUNG = "DUNG_";
+	public static string LE_TRAI = "LE_TRAI";
+	public static string LE_PHAI = "LE_PHAI";
+	public static string LE_TREN = "LE_TREN";
+	public static string LE_DUOI = "LE_DUOI";
 
 	//Light
 
@@ -42,7 +46,8 @@ public struct TileKey {
 	//Sign
 
 	public static string SIGN_DIR = "SIGN_DIR";
-
+	public static string SIGN_MAX_TOCDO = "SIGN_MAX_TOCDO";
+	public static string SIGN_MIN_TOCDO = "SIGN_MIN_TOCDO";
 }
 
 public class IInspector : MonoBehaviour {

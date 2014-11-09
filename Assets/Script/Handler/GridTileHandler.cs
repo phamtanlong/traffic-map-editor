@@ -39,17 +39,18 @@ public class GridTileHandler : MonoBehaviour {
 		DrawPanelHandler.Instance.OnChangeSelectedTile ();
 	}
 
-	public void Init (TileHandler ins, int newTileId) {
+	public void Init (Tile tile, int newTileId) {
 
 		//edit
-		ins.gameObject.layer = 9;
+		gameObject.layer = 9;
 		
-		UITexture tt = ins.GetComponent<UITexture>();
+		UITexture tt = gameObject.GetComponent<UITexture>();
 		tt.width = tt.mainTexture.width;
 		tt.height = tt.mainTexture.height;
+		tt.color = Color.white;
 
 		int depth = ROAD_DEPTH;
-		switch (ins.tile.layerType) {
+		switch (tile.layerType) {
 		case LayerType.Road:
 			depth = ROAD_DEPTH;
 			break;
@@ -66,23 +67,67 @@ public class GridTileHandler : MonoBehaviour {
 		depth += newTileId;
 		tt.depth = depth;
 
-		BoxCollider b = ins.GetComponent<BoxCollider>();
+		BoxCollider b = gameObject.AddComponent<BoxCollider>();
 		b.size = new Vector3 (tt.mainTexture.width, tt.mainTexture.height, 1);
 		
-		ins.gameObject.AddComponent (typeof (DragableObject1));
-		
-		//remove
-		//Destroy (ins.GetComponent<BoxCollider>());
-		Destroy (ins.GetComponent<UIButton>());
-		Destroy (ins.GetComponent<UIPlaySound>());
-		Destroy (ins.GetComponent<UIDragScrollView>());
-		Destroy (ins.GetComponent<TweenColor>());
-		Destroy (ins.GetComponent<TileHandler>());
-		
-		foreach (Transform c in ins.transform) {
-			GameObject.Destroy(c.gameObject);
+		gameObject.AddComponent <DragableObject1> ();
+	}
+
+	
+	public void InitDefaultTileData () {
+		switch (tile.layerType) {
+		case LayerType.Road:
+			InitRoadData ();
+			break;
+
+		case LayerType.Sign:
+			InitSignData ();
+			break;
+
+		case LayerType.Other:
+			InitOtherData ();
+			break;
 		}
+	}
+
+	private void InitRoadData () {
+		//Coi
+		Ultil.GetString (TileKey.COI, "true", tile.properties);
 		
-		ins.GetComponent<UITexture>().color = Color.white;
+		//Chieu
+		Ultil.GetString (TileKey.CHIEU, "UP", tile.properties);
+		
+		//Velocity
+		Ultil.GetString (TileKey.MIN_VEL, "0", tile.properties);
+		Ultil.GetString (TileKey.MAX_VEL, "40", tile.properties);
+		
+		//Huong Re
+		Ultil.GetString (TileKey.RE_TRAI, "true", tile.properties);
+		Ultil.GetString (TileKey.RE_PHAI, "true", tile.properties);
+		Ultil.GetString (TileKey.RE_THANG, "true", tile.properties);
+
+		foreach (VihicleType val in Enum.GetValues(typeof(VihicleType)))
+		{
+			string name = Enum.GetName(typeof(VihicleType), val);
+			Ultil.GetString (TileKey.DI + name, "true", tile.properties);
+			Ultil.GetString (TileKey.DUNG + name, "true", tile.properties);
+		}
+	}
+
+	private void InitSignData () {
+		Ultil.GetString (TileKey.SIGN_DIR, "UP", tile.properties);
+	}
+
+	private void InitOtherData () {
+		if (tile.typeId == 301) { //light
+			//GroupID
+			Ultil.GetString (TileKey.LIGHT_GROUP_ID, "0", tile.properties);
+			
+			//Huong
+			Ultil.GetString (TileKey.LIGHT_HUONG, "UP", tile.properties);
+			
+			//LanDuong
+			Ultil.GetString (TileKey.LIGHT_LAN_DUONG, "0", tile.properties);
+		}
 	}
 }

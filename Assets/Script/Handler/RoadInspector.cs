@@ -18,6 +18,12 @@ public class RoadInspector : IInspector {
 	//public UIToggle cbReLui;
 	public ComboCheckbox cbLoaiXe;
 	public UIInput inpDetail;
+	public UIToggle cbLeTrai;
+	public UIToggle cbLePhai;
+	public UIToggle cbLeTren;
+	public UIToggle cbLeDuoi;
+
+	private bool isIniting = true;
 
 	//public Tile tile;
 
@@ -26,6 +32,16 @@ public class RoadInspector : IInspector {
 	void Update () {}
 
 	public override void Save () {
+
+		if (isIniting == true) {
+			return;
+		}
+
+		//Le
+		gridtile.tile.properties[TileKey.LE_TRAI] = "" + cbLeTrai.value;
+		gridtile.tile.properties[TileKey.LE_PHAI] = "" + cbLePhai.value;
+		gridtile.tile.properties[TileKey.LE_TREN] = "" + cbLeTren.value;
+		gridtile.tile.properties[TileKey.LE_DUOI] = "" + cbLeDuoi.value;
 
 		//Coi
 		gridtile.tile.properties[TileKey.COI] = "" + cbCoi.value;
@@ -56,11 +72,22 @@ public class RoadInspector : IInspector {
 			Debug.Log ("Wrong tile");
 			return;
 		}
-
+		isIniting = true;
 		this.gridtile = gridtile;
 
 		//Id
 		lbID.text = ""+gridtile.tile.objId;
+
+		//Le
+		bool isLeTrai = Boolean.Parse (Ultil.GetString (TileKey.LE_TRAI, "false", gridtile.tile.properties));
+		cbLeTrai.value = isLeTrai;
+		bool isLePhai = Boolean.Parse (Ultil.GetString (TileKey.LE_PHAI, "false", gridtile.tile.properties));
+		cbLePhai.value = isLePhai;
+		
+		bool isLeTren = Boolean.Parse (Ultil.GetString (TileKey.LE_TREN, "false", gridtile.tile.properties));
+		cbLeTren.value = isLeTren;
+		bool isLeDuoi = Boolean.Parse (Ultil.GetString (TileKey.LE_DUOI, "false", gridtile.tile.properties));
+		cbLeDuoi.value = isLeDuoi;
 
 		//Coi
 		bool isCoi = Boolean.Parse (Ultil.GetString (TileKey.COI, "true", gridtile.tile.properties));
@@ -94,10 +121,17 @@ public class RoadInspector : IInspector {
 			listData.Add (new ComboCheckboxData (name, isDi, isDung));
 		}
 
-		cbLoaiXe.Init (listData);
+		cbLoaiXe.Init (listData, this.OnValueChange);
+		
+		//Save ();
+		isIniting = false;
 	}
 
 	#region EVENT HANDLER
+
+	public void OnValueChange () {
+		Save ();
+	}
 
 	public void OnAddWidth () {
 		if (gridtile == null) return;
@@ -114,6 +148,8 @@ public class RoadInspector : IInspector {
 
 		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
 		box.size = new Vector3 (tt.width, tt.height, 0);
+		
+		Save ();
 	}
 
 	public void OnAddHieght () {
@@ -131,6 +167,8 @@ public class RoadInspector : IInspector {
 
 		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
 		box.size = new Vector3 (tt.width, tt.height, 0);
+		
+		Save ();
 	}
 	
 	public void OnSubWidth () {
@@ -148,6 +186,8 @@ public class RoadInspector : IInspector {
 		
 		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
 		box.size = new Vector3 (tt.width, tt.height, 0);
+		
+		Save ();
 	}
 	
 	public void OnSubHieght () {
@@ -165,6 +205,8 @@ public class RoadInspector : IInspector {
 		
 		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
 		box.size = new Vector3 (tt.width, tt.height, 0);
+
+		Save ();
 	}
 
 

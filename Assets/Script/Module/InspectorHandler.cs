@@ -22,7 +22,7 @@ public class InspectorHandler : MonoBehaviour {
 	public RoadInspector roadInspector;
 	public SignInspector signInspector;
 	public ViewInspector viewInspector;
-	public LightInspector lightInspector;
+	public OtherInspector otherInspector;
 	
 	private IInspector currentInspector = null;
 
@@ -32,7 +32,7 @@ public class InspectorHandler : MonoBehaviour {
 		roadInspector.gameObject.SetActive (false);
 		signInspector.gameObject.SetActive (false);
 		viewInspector.gameObject.SetActive (false);
-		lightInspector.gameObject.SetActive (false);
+		otherInspector.gameObject.SetActive (false);
 	}
 	void Update () {}
 
@@ -41,6 +41,7 @@ public class InspectorHandler : MonoBehaviour {
 
 		if (currentInspector != null) {
 			currentInspector.gameObject.SetActive (false);
+			currentInspector = null;
 		}
 
 		switch (t.tile.layerType) {
@@ -57,12 +58,14 @@ public class InspectorHandler : MonoBehaviour {
 			break;
 
 		case LayerType.Other:
-			currentInspector = lightInspector;
+			currentInspector = otherInspector;
 			break;
 		}
-		
-		currentInspector.gameObject.SetActive (true);
-		currentInspector.Init (t);
+
+		if (currentInspector != null) {
+			currentInspector.gameObject.SetActive (true);
+			currentInspector.Init (t);
+		}
 	}
 
 	public void OnSave () {

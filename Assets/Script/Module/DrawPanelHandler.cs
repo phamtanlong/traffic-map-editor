@@ -64,7 +64,7 @@ public class DrawPanelHandler : MonoBehaviour {
 					int newTileId = Ultil.GetNewObjId ();
 					TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (tile.typeId);
 
-					GridTileHandler gt = AddNewObject (newpos, newTileId, tilehandler, tile.Copy (), Global.currentLayer.id);
+					GridTileHandler gt = AddNewObject (newpos, newTileId, tile.Copy (), Global.currentLayer.id);
 					gt.tile = tile;
 					gt.tile.objId = newTileId;
 
@@ -196,12 +196,12 @@ public class DrawPanelHandler : MonoBehaviour {
 			Vector2 v = new Vector2 (vec2.x, vec2.y);
 
 			int newTileId = Ultil.GetNewObjId ();
-			AddNewObject (v, newTileId, ToolboxHandler.Instance.SelectedTile, Global.currentTile.Copy(), Global.currentLayer.id);
+			AddNewObject (v, newTileId, Global.currentTile.Copy(), Global.currentLayer.id);
 		}
 	}
 
-	public GridTileHandler AddNewObject (Vector2 pos, int newTileId, TileHandler tileHandler, Tile tile, int layerId) {
-		if (tileHandler != null && layerId > 0) {
+	public GridTileHandler AddNewObject (Vector2 pos, int newTileId, Tile tile, int layerId) {
+		if (layerId > 0) {
 			
 			GridLayerHandler d = null;
 			dictLayers.TryGetValue (layerId, out d);
@@ -215,11 +215,12 @@ public class DrawPanelHandler : MonoBehaviour {
 				return null;
 			}
 
-			TileHandler ins = GameObject.Instantiate (tileHandler) as TileHandler;
-			ins.gameObject.AddComponent (typeof (GridTileHandler));
+			GameObject ins = new GameObject ();
+			UITexture tt = ins.AddComponent <UITexture>();
+			tt.mainTexture = TileManager.Instance.GetTexture (tile.typeId+"");
 
-			GridTileHandler gt = ins.GetComponent<GridTileHandler>();
-			gt.Init (ins, newTileId);
+			GridTileHandler gt = ins.AddComponent <GridTileHandler>();
+			gt.Init (tile, newTileId);
 			gt.tile = tile.Copy ();
 			gt.tile.objId = newTileId;
 			//gt.tile.layerId = layerId;
@@ -237,7 +238,6 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.transform.localPosition = pos;
 			gt.transform.localScale = Vector2.one;
 
-			UITexture tt = gt.GetComponent <UITexture> ();
 			gt.tile.x = gt.transform.localPosition.x;
 			gt.tile.y = gt.transform.localPosition.y;
 			gt.tile.w = tt.width;

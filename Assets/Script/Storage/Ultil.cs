@@ -34,4 +34,36 @@ public class Ultil {
 
 		return value;
 	}
+	
+	public static int CompareTextureName(Texture x, Texture y) {
+		int xx = int.Parse (x.name);
+		int yy = int.Parse (y.name);
+		
+		return xx - yy;
+	}
+
+	public static string GetFolderTile (string tileName) {
+		int v = int.Parse (tileName);
+
+		if (v <= 100) {
+			return "1";
+		} else if (v <= 200) {
+			return "100";
+		} else if (v <= 300) {
+			return "200";
+		} else if (v <= 400) {
+			return "300";
+		}
+
+		Debug.LogError ("Wrong Tile Name");
+
+		return "";
+	}
+
 }
+
+
+
+
+
+

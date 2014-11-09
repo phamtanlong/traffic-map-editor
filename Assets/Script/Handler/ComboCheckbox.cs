@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -28,6 +29,8 @@ public class ComboCheckbox : MonoBehaviour {
 
 	private bool isShow = false;
 
+	public Action onValueChange = null;
+
 	void Start () {
 		isShow = false;
 		RefreshState ();
@@ -35,7 +38,9 @@ public class ComboCheckbox : MonoBehaviour {
 
 	void Update () {}
 
-	public void Init (List<ComboCheckboxData> listData) {
+	public void Init (List<ComboCheckboxData> listData, Action callback) {
+
+		this.onValueChange = callback;
 
 		foreach (Transform t in verticalGrid.transform) {
 			GameObject.Destroy (t.gameObject);
@@ -46,8 +51,9 @@ public class ComboCheckbox : MonoBehaviour {
 		for (int i = 0; i < listData.Count; ++i) {
 			GameObject ins = GameObject.Instantiate (prefab) as GameObject;
 			ComboCheckboxItem item = ins.GetComponent<ComboCheckboxItem>();
-			item.Init (listData[i].title, listData[i].check1, listData[i].check2);
-			
+			item.Init (listData[i].title, listData[i].check1, listData[i].check2, this.onValueChange);
+
+
 			verticalGrid.AddChild (ins);
 			ins.transform.localScale = Vector3.one;
 
