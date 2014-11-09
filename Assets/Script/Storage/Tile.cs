@@ -2,6 +2,38 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
+public struct TileKey {
+	public static string COI = "COI";
+	public static string CHIEU = "CHIEU";
+	public static string MIN_VEL = "MIN_VEL";
+	public static string MAX_VEL = "MAX_VEL";
+	public static string RE_TRAI = "RE_TRAI";
+	public static string RE_PHAI = "RE_PHAI";
+	public static string RE_THANG = "RE_THANG";
+	public static string LOAI_XE = "LOAI_XE";
+	public static string DI = "DI_";
+	public static string DUNG = "DUNG_";
+	public static string LE_TRAI = "LE_TRAI";
+	public static string LE_PHAI = "LE_PHAI";
+	public static string LE_TREN = "LE_TREN";
+	public static string LE_DUOI = "LE_DUOI";
+
+	//Light
+
+	public static string LIGHT_GROUP_ID = "LIGHT_GROUP_ID";
+	public static string LIGHT_HUONG = "LIGHT_HUONG";
+	public static string LIGHT_LAN_DUONG = "LIGHT_LAN_DUONG";
+
+	//Sign
+
+	public static string SIGN_DIR = "SIGN_DIR";
+	public static string SIGN_MAX_TOCDO = "SIGN_MAX_TOCDO";
+	public static string SIGN_MIN_TOCDO = "SIGN_MIN_TOCDO";
+}
+
+
+
 [System.Serializable]
 public class Tile {
 
