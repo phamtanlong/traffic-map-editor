@@ -98,7 +98,7 @@ public class MenuHandler : MonoBehaviour {
 	}
 
 	private void SaveTemp () {
-//#if ! UNITY_EDITOR
+#if ! UNITY_EDITOR
 		string s = Main.Instance.Export ();
 		string log = Application.dataPath 
 				+ "/save_" 
@@ -111,7 +111,7 @@ public class MenuHandler : MonoBehaviour {
 		File.WriteAllText (log, s);
 		
 		Main.Instance.log.text = log;
-//#endif
+#endif
 	}
 
 #endif

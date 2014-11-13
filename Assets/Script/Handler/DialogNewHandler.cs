@@ -6,6 +6,7 @@ public class DialogNewHandler : MonoBehaviour {
 	public UIInput inpWidth;
 	public UIInput inpHeight;
 	public UIInput inpName;
+	public UIInput inHour;
 
 	public void OnCreateNewMap () {
 		this.gameObject.SetActive (false);
@@ -24,6 +25,7 @@ public class DialogNewHandler : MonoBehaviour {
 		Global.currentMap.width = w;
 		Global.currentMap.height = h;
 		Global.currentMap.name = inpName.value;
+		Global.currentMap.simulateTime = int.Parse (inHour.value);
 
 		Main.Instance.NewMap ();
 	}

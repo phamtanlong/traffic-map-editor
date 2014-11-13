@@ -30,6 +30,7 @@ public class Main : MonoBehaviour {
 			Global.currentMap.name = (string) info["name"];
 			Global.currentMap.width = (int) info["width"];
 			Global.currentMap.height = (int) info["height"];
+			Global.currentMap.simulateTime = (int) info["simulateTime"];
 
 			Main.Instance.EditMap ();
 		}
@@ -128,6 +129,7 @@ public class Main : MonoBehaviour {
 		info["width"] = Global.currentMap.width;
 		info["height"] = Global.currentMap.height;
 		info["tile"] = GameConst.TILE_WIDTH;
+		info["simulateTime"] = Global.currentMap.simulateTime;
 		//-------------------------
 		total["info"] = info;
 

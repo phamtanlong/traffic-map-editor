@@ -6,11 +6,13 @@ public class DialogEditHandler : MonoBehaviour {
 	public UIInput inpWidth;
 	public UIInput inpHeight;
 	public UIInput inpName;
+	public UIInput inpHour;
 
 	void OnEnable() {
 		inpWidth.value = ""+Global.currentMap.width;
 		inpHeight.value = ""+Global.currentMap.height;
 		inpName.value = ""+Global.currentMap.name;
+		inpHour.value = ""+Global.currentMap.simulateTime;
 	}
 
 	public void OnEditMapOK () {
@@ -30,6 +32,7 @@ public class DialogEditHandler : MonoBehaviour {
 		Global.currentMap.width = w;
 		Global.currentMap.height = h;
 		Global.currentMap.name = inpName.value;
+		Global.currentMap.simulateTime = int.Parse (inpHour.value);
 
 		Main.Instance.EditMap ();
 	}
