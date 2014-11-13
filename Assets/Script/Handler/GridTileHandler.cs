@@ -91,12 +91,7 @@ public class GridTileHandler : MonoBehaviour {
 	}
 
 	private void InitRoadData () {
-		//Coi
-		Ultil.GetString (TileKey.COI, "true", tile.properties);
-		
-		//Chieu
-		Ultil.GetString (TileKey.CHIEU, "UP", tile.properties);
-		
+
 		//Velocity
 		Ultil.GetString (TileKey.MIN_VEL, "0", tile.properties);
 		Ultil.GetString (TileKey.MAX_VEL, "40", tile.properties);

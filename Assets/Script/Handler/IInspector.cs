@@ -2,8 +2,9 @@
 using System.Collections;
 
 public enum VihicleType {
-	XeMay,
-	MoTo,
+	MoToA1,
+	MoToA2,
+	MoToA3,
 	Oto,
 	XeDap,
 	XeKhach,

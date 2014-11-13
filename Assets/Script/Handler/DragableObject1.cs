@@ -7,7 +7,7 @@ public class DragableObject1 : MonoBehaviour {
 	public static Vector2 step = new Vector2 (32,32) ;//Vector2.one;
 	public KeyCode keyToDisable=KeyCode.Space;
 
-	private bool isDeleted = false;
+//	private bool isDeleted = false;
 	private Texture originColorDelete;
 	private Texture originColorClick;
 	private bool isDragFirst = false;

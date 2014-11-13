@@ -98,13 +98,20 @@ public class MenuHandler : MonoBehaviour {
 	}
 
 	private void SaveTemp () {
-#if ! UNITY_EDITOR
+//#if ! UNITY_EDITOR
 		string s = Main.Instance.Export ();
-		string log = Application.dataPath + "/save_" + Global.currentMap.name + "_" + System.DateTime.Now.Hour + "h_" + System.DateTime.Now.Minute + "m.json";
+		string log = Application.dataPath 
+				+ "/save_" 
+				+ Global.currentMap.name 
+				+ "_" + System.DateTime.Now.Day + "th"
+				+ "-" + System.DateTime.Now.Month
+				+ "_" +System.DateTime.Now.Hour 
+				+ "h" + System.DateTime.Now.Minute + "m.json";
+
 		File.WriteAllText (log, s);
 		
 		Main.Instance.log.text = log;
-#endif
+//#endif
 	}
 
 #endif

@@ -34,7 +34,7 @@ public class Main : MonoBehaviour {
 			Main.Instance.EditMap ();
 		}
 
-
+		int maxId = 0;
 		//Layers
 		Dictionary<string, object> layers = total["layer"] as Dictionary<string, object>;
 		if (layers != null) {
@@ -63,6 +63,7 @@ public class Main : MonoBehaviour {
 					//ToolboxHandler.Instance.SelectedTile = tilehandler;
 					Global.currentTile = t;
 					GridTileHandler gt = DrawPanelHandler.Instance.AddNewObject (v, t.objId, t, layerId);
+					gt.tile = t.Copy ();
 
 					UITexture tt = gt.GetComponent<UITexture> ();
 					tt.width = (int)t.w;
@@ -71,8 +72,11 @@ public class Main : MonoBehaviour {
 					BoxCollider box = gt.GetComponent<BoxCollider> ();
 					box.size = new Vector3 (tt.width, tt.height, 0);
 
-					//Increase Unique Tile Id
-					Ultil.ResetObjId (t.objId);
+					if (maxId < t.objId) {
+						maxId = t.objId;
+
+						Ultil.ResetObjId (maxId);
+					}
 				}
 			}
 		} else {

@@ -11,7 +11,7 @@ public class DrawPanelHandler : MonoBehaviour {
 
 	public GridTileHandler CopiedGridTile = null;
 
-	public Camera camera;
+	public Camera objcamera;
 	public KeyCode keyToDrag = KeyCode.Space;
 
 	public UISprite grid;
@@ -62,7 +62,7 @@ public class DrawPanelHandler : MonoBehaviour {
 					Vector3 oldpos = CopiedGridTile.transform.localPosition;
 					Vector3 newpos = new Vector3 (oldpos.x+16, oldpos.y+16, oldpos.z);
 					int newTileId = Ultil.GetNewObjId ();
-					TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (tile.typeId);
+					//TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (tile.typeId);
 
 					GridTileHandler gt = AddNewObject (newpos, newTileId, tile.Copy (), Global.currentLayer.id);
 					gt.tile = tile;
@@ -160,7 +160,7 @@ public class DrawPanelHandler : MonoBehaviour {
 	void OnScroll (float delta) {
 		delta *= -1;
 		
-		float s = camera.orthographicSize;
+		float s = objcamera.orthographicSize;
 		s = s + delta * scaleSpeed;
 		
 		if (s < minScale) {
@@ -172,7 +172,7 @@ public class DrawPanelHandler : MonoBehaviour {
 		}
 		
 		Main.Instance.log.text = "Scale " + s;
-		camera.orthographicSize = s;
+		objcamera.orthographicSize = s;
 		
 		if (s <= 1.0f) {
 			grid.spriteName = "tile128";
@@ -190,7 +190,7 @@ public class DrawPanelHandler : MonoBehaviour {
 	void OnClick () {
 		bool isDrag = Input.GetKey (keyToDrag);
 		
-		if (isDrag == false && Global.currentLayer != null) {
+		if (isDrag == false && Global.currentLayer != null && Global.currentTile != null) {
 			Vector2 vec = UICamera.lastWorldPosition;
 			Vector3 vec2 = transform.InverseTransformPoint (vec.x, vec.y, 0);
 			Vector2 v = new Vector2 (vec2.x, vec2.y);

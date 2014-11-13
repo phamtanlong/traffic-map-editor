@@ -8,14 +8,12 @@ public class RoadInspector : IInspector {
 	public const int STEP_RESIZE = 32;
 
 	public UILabel lbID;
-	public UIPopupList popChieu;
-	public UIToggle cbCoi;
 	public UIInput inpTocDoMin;
 	public UIInput inpTocDoMax;
 	public UIToggle cbReTrai;
 	public UIToggle cbRePhai;
 	public UIToggle cbReThang;
-	//public UIToggle cbReLui;
+	public UIToggle cbReQuayDau;
 	public ComboCheckbox cbLoaiXe;
 	public UIInput inpDetail;
 	public UIToggle cbLeTrai;
@@ -43,12 +41,6 @@ public class RoadInspector : IInspector {
 		gridtile.tile.properties[TileKey.LE_TREN] = "" + cbLeTren.value;
 		gridtile.tile.properties[TileKey.LE_DUOI] = "" + cbLeDuoi.value;
 
-		//Coi
-		gridtile.tile.properties[TileKey.COI] = "" + cbCoi.value;
-
-		//Chieu
-		gridtile.tile.properties[TileKey.CHIEU] = popChieu.value;
-
 		//Velocity
 		gridtile.tile.properties[TileKey.MIN_VEL] = inpTocDoMin.value;
 		gridtile.tile.properties[TileKey.MAX_VEL] = inpTocDoMax.value;
@@ -57,6 +49,7 @@ public class RoadInspector : IInspector {
 		gridtile.tile.properties[TileKey.RE_TRAI] = ""+cbReTrai.value;
 		gridtile.tile.properties[TileKey.RE_PHAI] = ""+cbRePhai.value;
 		gridtile.tile.properties[TileKey.RE_THANG] = ""+cbReThang.value;
+		gridtile.tile.properties[TileKey.RE_QUAY_DAU] = ""+cbReQuayDau.value;
 
 		//Loai Xe
 		for (int i = 0; i < cbLoaiXe.listItems.Count; ++i) {
@@ -89,14 +82,6 @@ public class RoadInspector : IInspector {
 		bool isLeDuoi = Boolean.Parse (Ultil.GetString (TileKey.LE_DUOI, "false", gridtile.tile.properties));
 		cbLeDuoi.value = isLeDuoi;
 
-		//Coi
-		bool isCoi = Boolean.Parse (Ultil.GetString (TileKey.COI, "true", gridtile.tile.properties));
-		cbCoi.value = isCoi;
-
-		//Chieu
-		string dir = Ultil.GetString (TileKey.CHIEU, "UP", gridtile.tile.properties);
-		popChieu.value = dir;
-
 		//Velocity
 		int minVel = int.Parse (Ultil.GetString (TileKey.MIN_VEL, "0", gridtile.tile.properties));
 		int maxVel = int.Parse (Ultil.GetString (TileKey.MAX_VEL, "40", gridtile.tile.properties));
@@ -107,9 +92,11 @@ public class RoadInspector : IInspector {
 		bool isReTrai = Boolean.Parse (Ultil.GetString (TileKey.RE_TRAI, "true", gridtile.tile.properties));
 		bool isRePhai = Boolean.Parse (Ultil.GetString (TileKey.RE_PHAI, "true", gridtile.tile.properties));
 		bool isReThang = Boolean.Parse (Ultil.GetString (TileKey.RE_THANG, "true", gridtile.tile.properties));
+		bool isReQuayDau = Boolean.Parse (Ultil.GetString (TileKey.RE_QUAY_DAU, "true", gridtile.tile.properties));
 		cbReTrai.value = isReTrai;
 		cbRePhai.value = isRePhai;
 		cbReThang.value = isReThang;
+		cbReQuayDau.value = isReQuayDau;
 		
 		List<ComboCheckboxData> listData = new List<ComboCheckboxData> ();
 		foreach (VihicleType val in Enum.GetValues(typeof(VihicleType)))
