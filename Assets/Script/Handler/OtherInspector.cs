@@ -4,11 +4,13 @@ using System.Collections;
 public class OtherInspector : IInspector {
 	
 	public LightInspector lightInspector;
+	public AutoCarInspector autoCarInspector;
 
 	private IInspector currentInspector;
 
 	void Start () {
 		lightInspector.gameObject.SetActive (false);
+		autoCarInspector.gameObject.SetActive (false);
 	}
 
 	void Update () {}
@@ -34,6 +36,10 @@ public class OtherInspector : IInspector {
 		switch (gridtile.tile.typeId) {
 		case 301:
 			currentInspector = lightInspector;
+			break;
+
+		case 310:
+			currentInspector = autoCarInspector;
 			break;
 		}
 

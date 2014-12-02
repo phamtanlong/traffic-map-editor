@@ -36,7 +36,7 @@ public class DrawPanelHandler : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyUp (KeyCode.Backspace) || Input.GetKeyUp (KeyCode.Delete)) 
 		{
-			if (InspectorHandler.IsFocus == false) {
+			if (InspectorHandler.Instance.IsFocus == false) {
 				if (SelectedGridTile != null) {
 					dictLayers[Global.currentLayer.id].dictTiles.Remove (SelectedGridTile.tile.objId);
 
@@ -46,7 +46,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			}
 		}
 		
-		if (InspectorHandler.IsFocus == false) {
+		if (InspectorHandler.Instance.IsFocus == false) {
 			if (Input.GetKeyUp (KeyCode.C)) {
 				if (SelectedGridTile != null) {
 					CopiedGridTile = SelectedGridTile;
@@ -242,6 +242,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.tile.y = gt.transform.localPosition.y;
 			gt.tile.w = tt.width;
 			gt.tile.h = tt.height;
+
 
 			dictLayers[layerId].dictTiles[newTileId] = gt;
 

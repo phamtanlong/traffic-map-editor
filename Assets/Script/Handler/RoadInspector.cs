@@ -10,24 +10,45 @@ public class RoadInspector : IInspector {
 	public UILabel lbID;
 	public UIInput inpTocDoMin;
 	public UIInput inpTocDoMax;
+	//
 	public UIToggle cbReTrai;
 	public UIToggle cbRePhai;
 	public UIToggle cbReThang;
 	public UIToggle cbReQuayDau;
+	//
 	public ComboCheckbox cbLoaiXe;
-	public UIInput inpDetail;
+	//
 	public UIToggle cbLeTrai;
 	public UIToggle cbLePhai;
 	public UIToggle cbLeTren;
 	public UIToggle cbLeDuoi;
+	//	
+	public UIToggle cbPCachTrai;
+	public UIToggle cbPCachPhai;
+	public UIToggle cbPCachTren;
+	public UIToggle cbPCachDuoi;
+	//size
+	public UIInput inpWidth;
+	public UIInput inpHeight;
+
 
 	private bool isIniting = true;
-
-	//public Tile tile;
 
 	void Start () {}
 
 	void Update () {}
+
+	public override bool IsFocus {
+		get {
+			if (inpTocDoMax.isSelected) return true;
+			if (inpTocDoMin.isSelected) return true;
+			
+			if (inpWidth.isSelected) return true;
+			if (inpHeight.isSelected) return true;
+
+			return false;
+		}
+	}
 
 	public override void Save () {
 
@@ -40,6 +61,12 @@ public class RoadInspector : IInspector {
 		gridtile.tile.properties[TileKey.LE_PHAI] = "" + cbLePhai.value;
 		gridtile.tile.properties[TileKey.LE_TREN] = "" + cbLeTren.value;
 		gridtile.tile.properties[TileKey.LE_DUOI] = "" + cbLeDuoi.value;
+		
+		//Dai Phan Cach
+		gridtile.tile.properties[TileKey.PCACH_TRAI] = "" + cbPCachTrai.value;
+		gridtile.tile.properties[TileKey.PCACH_PHAI] = "" + cbPCachPhai.value;
+		gridtile.tile.properties[TileKey.PCACH_TREN] = "" + cbPCachTren.value;
+		gridtile.tile.properties[TileKey.PCACH_DUOI] = "" + cbPCachDuoi.value;
 
 		//Velocity
 		gridtile.tile.properties[TileKey.MIN_VEL] = inpTocDoMin.value;
@@ -71,6 +98,8 @@ public class RoadInspector : IInspector {
 		//Id
 		lbID.text = ""+gridtile.tile.objId;
 
+		// --------------------
+
 		//Le
 		bool isLeTrai = Boolean.Parse (Ultil.GetString (TileKey.LE_TRAI, "false", gridtile.tile.properties));
 		cbLeTrai.value = isLeTrai;
@@ -82,11 +111,33 @@ public class RoadInspector : IInspector {
 		bool isLeDuoi = Boolean.Parse (Ultil.GetString (TileKey.LE_DUOI, "false", gridtile.tile.properties));
 		cbLeDuoi.value = isLeDuoi;
 
+		//Dai Phan Cach --------------
+
+		bool isPCachTrai = Boolean.Parse (Ultil.GetString (TileKey.PCACH_TRAI, "false", gridtile.tile.properties));
+		cbPCachTrai.value = isPCachTrai;
+		bool isPCachPhai = Boolean.Parse (Ultil.GetString (TileKey.PCACH_PHAI, "false", gridtile.tile.properties));
+		cbPCachPhai.value = isPCachPhai;
+		
+		bool isPCachTren = Boolean.Parse (Ultil.GetString (TileKey.PCACH_TREN, "false", gridtile.tile.properties));
+		cbPCachTren.value = isPCachTren;
+		bool isPCachDuoi = Boolean.Parse (Ultil.GetString (TileKey.PCACH_DUOI, "false", gridtile.tile.properties));
+		cbPCachDuoi.value = isPCachDuoi;
+
+		// --------------------
+		//Size
+		float w = gridtile.tile.w * GameConst.PIXEL_TO_MET;
+		float h = gridtile.tile.h * GameConst.PIXEL_TO_MET;
+		inpWidth.value = "" + w;
+		inpHeight.value = "" + h;
+
+
 		//Velocity
 		int minVel = int.Parse (Ultil.GetString (TileKey.MIN_VEL, "0", gridtile.tile.properties));
 		int maxVel = int.Parse (Ultil.GetString (TileKey.MAX_VEL, "40", gridtile.tile.properties));
 		inpTocDoMin.value = ""+minVel;
 		inpTocDoMax.value = ""+maxVel;
+		
+		// --------------------
 
 		//Huong Re
 		bool isReTrai = Boolean.Parse (Ultil.GetString (TileKey.RE_TRAI, "true", gridtile.tile.properties));
@@ -117,6 +168,55 @@ public class RoadInspector : IInspector {
 	#region EVENT HANDLER
 
 	public void OnValueChange () {
+		Save ();
+	}
+
+	public void OnSetTocDo () {
+		
+		if (isIniting == true) {
+			return;
+		}
+		
+		if (inpTocDoMin.value.Length == 0) {
+			inpTocDoMin.value = "0";
+		}
+		
+		if (inpTocDoMax.value.Length == 0) {
+			inpTocDoMax.value = "0";
+		}
+
+		Save ();
+	}
+
+	public void OnSetSize () {
+
+		if (isIniting == true) {
+			return;
+		}
+
+		if (inpWidth.value.Length == 0) {
+			inpWidth.value = "1";
+		}
+
+		if (inpHeight.value.Length == 0) {
+			inpHeight.value = "1";
+		}
+
+		int w = (int)(int.Parse (inpWidth.value) * GameConst.MET_TO_PIXEL);
+		int h = (int)(int.Parse (inpHeight.value) * GameConst.MET_TO_PIXEL);
+
+		UITexture tt = gridtile.GetComponent <UITexture> ();
+		tt.width = w;
+		tt.height = h;
+		
+		gridtile.tile.x = gridtile.transform.localPosition.x;
+		gridtile.tile.y = gridtile.transform.localPosition.y;
+		gridtile.tile.w = tt.width;
+		gridtile.tile.h = tt.height;
+		
+		BoxCollider box = gridtile.GetComponent <BoxCollider> ();
+		box.size = new Vector3 (tt.width, tt.height, 0);
+		
 		Save ();
 	}
 

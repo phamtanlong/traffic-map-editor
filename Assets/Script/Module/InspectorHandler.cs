@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 public class InspectorHandler : MonoBehaviour {
 
-	public static bool IsFocus {
+	public bool IsFocus {
 		get {
-			return Instance.inpInfo.isSelected;
+			if (this.currentInspector != null) {
+				return this.currentInspector.IsFocus;
+			} else {
+				return false;
+			}
 		}
 	}
 	public static InspectorHandler Instance = null;
@@ -16,8 +20,6 @@ public class InspectorHandler : MonoBehaviour {
 
 	[HideInInspector]
 	public GridTileHandler SelectedTile = null;
-
-	public UIInput inpInfo;
 
 	public RoadInspector roadInspector;
 	public SignInspector signInspector;

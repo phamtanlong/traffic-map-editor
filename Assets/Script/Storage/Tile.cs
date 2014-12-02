@@ -17,6 +17,11 @@ public struct TileKey {
 	public static string LE_PHAI = "LE_PHAI";
 	public static string LE_TREN = "LE_TREN";
 	public static string LE_DUOI = "LE_DUOI";
+	//
+	public static string PCACH_TRAI = "PCACH_TRAI";
+	public static string PCACH_PHAI = "PCACH_PHAI";
+	public static string PCACH_TREN = "PCACH_TREN";
+	public static string PCACH_DUOI = "PCACH_DUOI";
 
 	//Light
 
@@ -29,6 +34,9 @@ public struct TileKey {
 	public static string SIGN_DIR = "SIGN_DIR";
 	public static string SIGN_MAX_TOCDO = "SIGN_MAX_TOCDO";
 	public static string SIGN_MIN_TOCDO = "SIGN_MIN_TOCDO";
+
+	//Auto Car
+	public static string AUTOCAR_DIR = "AUTOCAR_DIR";
 }
 
 

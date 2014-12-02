@@ -78,6 +78,29 @@ public class Main : MonoBehaviour {
 
 						Ultil.ResetObjId (maxId);
 					}
+
+					//Special
+					//AutoCar
+					if (t.typeId == 310) {
+						string chieu = Ultil.GetString (TileKey.AUTOCAR_DIR, "UP", t.properties);
+						switch (chieu) {
+						case "UP":
+							gt.transform.localEulerAngles = new Vector3(0, 0, 0);
+							break;
+							
+						case "DOWN":
+							gt.transform.localEulerAngles = new Vector3(0, 0, 180);
+							break;
+							
+						case "LEFT":
+							gt.transform.localEulerAngles = new Vector3(0, 0, 90);
+							break;
+							
+						case "RIGHT":
+							gt.transform.localEulerAngles = new Vector3(0, 0, -90);
+							break;
+						}
+					}
 				}
 			}
 		} else {

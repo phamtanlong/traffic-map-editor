@@ -30,6 +30,12 @@ public class IInspector : MonoBehaviour {
 
 	void Update () {}
 
+	public virtual bool IsFocus {
+		get {
+			return false;
+		}
+	}
+
 	public virtual void Save () {}
 
 	public virtual void Init (GridTileHandler gridtile) {}
