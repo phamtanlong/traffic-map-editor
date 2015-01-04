@@ -6,7 +6,10 @@
 import System.IO;
 import System.Collections.Generic;
 
+
 class UniFileBrowser extends MonoBehaviour {
+
+#if !UNITY_WEBPLAYER
 
 var filterFiles = false;			// Filter file names by the items in the filterFileExtensions array
 var filterFileExtensions : String[];// When filterFiles is true, show only the files with these extensions
@@ -1216,5 +1219,7 @@ class Popup {
 		return done;
 	}
 }
+
+#endif
 
 }

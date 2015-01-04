@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>Unity Web Player | TrafficMapEditor</title>
-		<script type='text/javascript' src='https://ssl-webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/jquery.min.js'></script>
-		<script type='text/javascript' src='UnityObject2.js'></script>
-		<script type='text/javascript' src='FileSaver.js'></script>
-		<script type='text/javascript' src='main.js'></script>
+		<title>Traffic Game - Map Editor</title>
+		<script type='text/javascript' src='protected/editor/jquery.min.js'></script>
+		<script type='text/javascript' src='protected/editor/UnityObject2.js'></script>
+		<script type='text/javascript' src='protected/editor/FileSaver.js'></script>
+		<script type='text/javascript' src='protected/editor/main.js'></script>
 		<style type="text/css">
 		<!--
 		body {
@@ -66,7 +66,9 @@
 		<div class="content">
 			<div id="unityPlayer">
 			</div>
+			<div id="popup" style="visibility: hidden; position: absolute; left: 40%; top: 40%; right: 40%; bottom: 40%; border: dotted red 2px; background-color: #00AFFF;">
+            	<input type="file" id="fileinput" accept=".json">
+        	</div>
 		</div>
-		<input type="file" id="fileinput" style="visibility:hidden;"/>
 	</body>
 </html>

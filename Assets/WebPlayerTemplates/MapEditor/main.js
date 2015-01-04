@@ -45,7 +45,7 @@ jQuery(function() {
 			break;
 		}
 	});
-	u.initPlugin(jQuery("#unityPlayer")[0], "BuildWeb.unity3d");
+	u.initPlugin(jQuery("#unityPlayer")[0], "protected/editor/editor.unity3d");
 });
 
 
@@ -54,7 +54,8 @@ jQuery(function() {
 // Import JSON
 
 function UploadJSONCallback(contents) {
-	document.getElementById('fileinput').style.visibility = 'hidden';
+	document.getElementById('popup').style.visibility = 'hidden';
+	//document.getElementById('fileinput').style.visibility = 'hidden';
 	document.getElementById('fileinput').removeEventListener('change', ReadSingleFile);
 
     u.getUnity().SendMessage("Menu", "OpenFileCallback2", contents);
@@ -75,7 +76,8 @@ function ReadSingleFile (evt) {
 }
 
 function ImportJSON (arg) {
-	document.getElementById('fileinput').style.visibility = 'visible';
+	document.getElementById('popup').style.visibility = 'visible';
+	//document.getElementById('fileinput').style.visibility = 'visible';
 	document.getElementById('fileinput').value = null;
 	document.getElementById('fileinput').addEventListener('change', ReadSingleFile);
 }

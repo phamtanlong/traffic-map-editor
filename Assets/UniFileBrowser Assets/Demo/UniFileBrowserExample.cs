@@ -6,6 +6,8 @@ using System.Collections;
 
 public class UniFileBrowserExample : MonoBehaviour {
 	
+#if !UNITY_WEBPLAYER
+
 	string message = "";
 	float alpha = 1.0f;
 	char pathChar = '/';
@@ -78,4 +80,7 @@ public class UniFileBrowserExample : MonoBehaviour {
 		}
 		message = "";
 	}
+
+#endif
+
 }
