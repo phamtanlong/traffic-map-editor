@@ -8,12 +8,20 @@ public class DialogNewHandler : MonoBehaviour {
 	public UIInput inpName;
 	public UIInput inHour;
 
+	void Start () {
+		inpWidth.value = ""+1000;
+		inpHeight.value = ""+1000;
+	}
+
 	public void OnCreateNewMap () {
 		this.gameObject.SetActive (false);
 		Main.Instance.log.text = "Create";
 
 		int w = int.Parse (inpWidth.value);
 		int h = int.Parse (inpHeight.value);
+
+		w = (int)(w * GameConst.MET_TO_PIXEL / GameConst.TILE_WIDTH);
+		h = (int)(h * GameConst.MET_TO_PIXEL / GameConst.TILE_HEIGHT);
 
 		if (w % 2 != 0) {
 			w += 1;
