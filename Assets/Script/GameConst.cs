@@ -8,6 +8,4 @@ public class GameConst {
 
 	public const float PIXEL_TO_MET = 1.0f / 16;
 	public const float MET_TO_PIXEL = 1 / PIXEL_TO_MET;
-
-
 }

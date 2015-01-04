@@ -85,7 +85,13 @@ public class MenuHandler : MonoBehaviour {
 		Main.Instance.log.text = pathToFile;
 		string s = File.ReadAllText (pathToFile);
 		Main.Instance.log.text = pathToFile;
-		Main.Instance.Import (s);
+
+		bool isOK = Main.Instance.Import (s);
+
+		if (isOK == false) {
+			Main.Instance.log.text = "Invalid file! Please use and JSON file made by Map Editor";
+			Debug.LogError ("Wrong Type Of File");
+		}
 	}
 
 	private void SaveFileCallback (string pathToFile) {

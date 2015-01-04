@@ -18,25 +18,39 @@ public class Main : MonoBehaviour {
 		Instance = this;
 	}
 
-	public void Import (string s) {
+	public bool Import (string s) {
 
 		Main.Instance.Reset ();
 
-		Dictionary<string, object>  total = JsonReader.Deserialize <Dictionary<string, object>> (s);
-
-		//Info
-		Dictionary<string, object> info = total["info"] as Dictionary<string, object>;
-		if (info != null) {
-			Global.currentMap.name = (string) info["name"];
-			Global.currentMap.width = (int) info["width"];
-			Global.currentMap.height = (int) info["height"];
-			Global.currentMap.simulateTime = (int) info["simulateTime"];
-
-			Main.Instance.EditMap ();
+		try {
+			ModelMap m = JsonReader.Deserialize <ModelMap> (s) as ModelMap;
+		} catch (Exception e) {
+			return false;
 		}
 
-		int maxId = 0;
+		Dictionary<string, object>  total = JsonReader.Deserialize <Dictionary<string, object>> (s);
+		if (total == null) {
+			return false;
+		}
+
+		// -----------------------------------
+		//Info
+
+		Dictionary<string, object> info = total["info"] as Dictionary<string, object>;
+		if (info == null) {
+			return false;
+		}
+
+		Global.currentMap.name = (string) info["name"];
+		Global.currentMap.width = (int) info["width"];
+		Global.currentMap.height = (int) info["height"];
+		Global.currentMap.simulateTime = (int) info["simulateTime"];
+		Main.Instance.EditMap ();
+
+		// -----------------------------------
 		//Layers
+
+		int maxId = 0;
 		Dictionary<string, object> layers = total["layer"] as Dictionary<string, object>;
 		if (layers != null) {
 
@@ -58,10 +72,7 @@ public class Main : MonoBehaviour {
 					Tile t = JsonReader.Deserialize<Tile> (JsonWriter.Serialize (p2.Value));
 					
 					Vector2 v = new Vector2 (t.x, t.y);
-					//TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (t.typeId);
-					//tilehandler.tile = t;
-					
-					//ToolboxHandler.Instance.SelectedTile = tilehandler;
+
 					Global.currentTile = t;
 					GridTileHandler gt = DrawPanelHandler.Instance.AddNewObject (v, t.objId, t, layerId);
 					gt.tile = t.Copy ();
@@ -79,7 +90,6 @@ public class Main : MonoBehaviour {
 						Ultil.ResetObjId (maxId);
 					}
 
-					//Special
 					//AutoCar
 					if (t.typeId == 310) {
 						string chieu = Ultil.GetString (TileKey.AUTOCAR_DIR, "UP", t.properties);
@@ -104,7 +114,7 @@ public class Main : MonoBehaviour {
 				}
 			}
 		} else {
-			Debug.Log ("Null layer dictionary");
+			return false;
 		}
 
 		//State
@@ -139,7 +149,11 @@ public class Main : MonoBehaviour {
 			ObjCamera.transform.localPosition = campos;
 			ObjCamera.orthographicSize = camera_size;
 
+		} else {
+			return false;
 		}
+
+		return true;
 	}
 
 	public string Export () {
@@ -148,6 +162,7 @@ public class Main : MonoBehaviour {
 
 		//Map Info
 		Dictionary<string, object> info = new Dictionary<string, object> ();
+
 		info["name"] = Global.currentMap.name;
 		info["width"] = Global.currentMap.width;
 		info["height"] = Global.currentMap.height;
