@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -58,6 +59,47 @@ public class Ultil {
 		Debug.LogError ("Wrong Tile Name");
 
 		return "";
+	}
+
+	public static void InitDefaultValue (Tile tile) {
+
+		if (tile.layerType == LayerType.Road) {
+			//Velocity
+			Ultil.GetString (TileKey.MIN_VEL, "0", tile.properties);
+			Ultil.GetString (TileKey.MAX_VEL, "40", tile.properties);
+			
+			//Huong Re
+			Ultil.GetString (TileKey.RE_TRAI, "true", tile.properties);
+			Ultil.GetString (TileKey.RE_PHAI, "true", tile.properties);
+			Ultil.GetString (TileKey.RE_THANG, "true", tile.properties);
+			
+			foreach (VihicleType val in Enum.GetValues(typeof(VihicleType)))
+			{
+				string name = Enum.GetName(typeof(VihicleType), val);
+				Ultil.GetString (TileKey.DI + name, "true", tile.properties);
+				Ultil.GetString (TileKey.DUNG + name, "true", tile.properties);
+			}
+
+			switch (tile.typeId) {
+
+			case TileID.ROAD_DOWN:
+				Ultil.GetString (TileKey.LE_TRAI, "true", tile.properties);
+				break;
+				
+			case TileID.ROAD_LEFT:
+				Ultil.GetString (TileKey.LE_TREN, "true", tile.properties);
+				break;
+				
+			case TileID.ROAD_RIGHT:
+				Ultil.GetString (TileKey.LE_DUOI, "true", tile.properties);
+				break;
+				
+			case TileID.ROAD_UP:
+				Ultil.GetString (TileKey.LE_PHAI, "true", tile.properties);
+				break;
+
+			}
+		}
 	}
 
 }

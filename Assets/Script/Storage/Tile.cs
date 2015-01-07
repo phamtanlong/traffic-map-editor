@@ -40,6 +40,13 @@ public struct TileKey {
 }
 
 
+public struct TileID {
+	public const int ROAD_DOWN = 1;
+	public const int ROAD_LEFT = 2;
+	public const int ROAD_RIGHT = 3;
+	public const int ROAD_UP = 4;
+}
+
 
 [System.Serializable]
 public class Tile {

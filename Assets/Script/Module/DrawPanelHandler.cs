@@ -196,7 +196,10 @@ public class DrawPanelHandler : MonoBehaviour {
 			Vector2 v = new Vector2 (vec2.x, vec2.y);
 
 			int newTileId = Ultil.GetNewObjId ();
-			AddNewObject (v, newTileId, Global.currentTile.Copy(), Global.currentLayer.id);
+			Tile t = Global.currentTile.Copy();
+			Ultil.InitDefaultValue (t);
+
+			AddNewObject (v, newTileId, t, Global.currentLayer.id);
 		}
 	}
 
