@@ -22,8 +22,14 @@ public class MenuHandler : MonoBehaviour {
 		isShowMenu = ! isShowMenu;
 		objMenuPanel.SetActive (isShowMenu);
 	}
-	
+
+	private static bool _fileInited = false;
 	public void FileValueChange () {
+		if (_fileInited == false) {
+			_fileInited = true;
+			return;
+		}
+
 		switch (popFile.value) {
 		case "Open":
 			DialogHandler.Instance.dialogBackground.SetActive (true);
@@ -45,7 +51,10 @@ public class MenuHandler : MonoBehaviour {
 			break;
 
 		case "Exit":
-			Application.Quit ();
+			DialogHandler.Instance.ShowDialogMessageYesNo ("Warning", 
+			                                               "Do you want to SAVE before quiting?", 
+			                                               this.CallbackQuitSave, 
+			                                               this.CallbackQuitNotSave);
 			break;
 
 		case "New":
@@ -54,12 +63,37 @@ public class MenuHandler : MonoBehaviour {
 		}
 	}
 
+	public void CallbackQuitSave () {Debug.Log ("quit save");
+		DialogHandler.Instance.dialogBackground.SetActive (true);
+#if UNITY_WEBPLAYER
+		SaveFile2 ();
+#else
+		SaveTemp ();
+		UniFileBrowser.use.SaveFileWindow (SaveFileCallbackAndQuit);
+#endif
+
+	}
+
+	public void CallbackQuitNotSave () {Debug.Log ("quit not save");
+		Application.Quit ();
+	}
+
+	private static bool _editInited = false;
 	public void EditValueChange () {
+		if (_editInited == false) {
+			_editInited = true;
+			return;
+		}
+
 		switch (popEdit.value) {
 		case "Edit":
 			DialogHandler.Instance.OpenDialogEditMap ();
 			break;
 		}
+	}
+
+	public void OnHelp () {
+		DialogHandler.Instance.OpenDialogHelp ();
 	}
 
 	private void CloseWindowCallback () {
@@ -101,6 +135,17 @@ public class MenuHandler : MonoBehaviour {
 		File.WriteAllText (pathToFile, s);
 
 		Main.Instance.log.text = "Write completed!";
+	}
+	
+	private void SaveFileCallbackAndQuit (string pathToFile) {
+		Main.Instance.log.text = pathToFile;
+		
+		string s = Main.Instance.Export ();
+		File.WriteAllText (pathToFile, s);
+		
+		Main.Instance.log.text = "Write completed!";
+
+		Application.Quit ();
 	}
 
 	private void SaveTemp () {

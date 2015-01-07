@@ -10,14 +10,18 @@ public class DialogHandler : MonoBehaviour {
 	public GameObject dialogNewMap;
 	public GameObject dialogEditMap;
 	public GameObject dialogBackground;
-
+	public GameObject dialogHelp;
 
 	void Awake () {
 		Instance = this;
 	}
 
-	public void ShowDialogMessage (string title, string message, Action<object> callback = null, object data = null) {
-		dialogMessage.Show (title, message, callback, data);
+	public void ShowDialogMessageOK (string title, string message, Action callback) {
+		dialogMessage.ShowDialogOK (title, message, callback);
+	}
+
+	public void ShowDialogMessageYesNo (string title, string message, Action callbackYes, Action callbackNo) {
+		dialogMessage.ShowDialogYesNo (title, message, callbackYes, callbackNo);
 	}
 
 	public void OpenDialogNewMap () {
@@ -26,5 +30,9 @@ public class DialogHandler : MonoBehaviour {
 
 	public void OpenDialogEditMap () {
 		dialogEditMap.SetActive (true);
+	}
+
+	public void OpenDialogHelp () {
+		dialogHelp.SetActive (true);
 	}
 }
