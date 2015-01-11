@@ -6,7 +6,15 @@
 var config = {
 	width: 1136, 
 	height: 700,
-	params: { enableDebugging:"0" }
+	params: { 
+		enableDebugging:"0",
+		backgroundcolor: "6f6f6f",
+	    bordercolor: "ffffff",
+	    textcolor: "FFFFFF",
+	    logoimage: "https://dl.dropboxusercontent.com/u/41829250/KhoaLuan/DontDeleteData/MapEditor/MyLogo.png",
+	    progressbarimage: "https://dl.dropboxusercontent.com/u/41829250/KhoaLuan/DontDeleteData/MapEditor/MyProgressBar.png",
+	    progressframeimage: "https://dl.dropboxusercontent.com/u/41829250/KhoaLuan/DontDeleteData/MapEditor/MyProgressFrame.png"
+	}
 	
 };
 var u = new UnityObject2(config);

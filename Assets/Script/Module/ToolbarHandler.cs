@@ -20,7 +20,6 @@ public class ToolbarHandler : MonoBehaviour {
 	}
 
 	public void OnSubmitDragStep () {
-
 		int step;
 		if (int.TryParse (inpDragStep.value, out step)) {
 			if (step >= 1 && step <= MAX_STEP) {

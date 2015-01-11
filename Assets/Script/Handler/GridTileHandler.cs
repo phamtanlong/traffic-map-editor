@@ -71,6 +71,7 @@ public class GridTileHandler : MonoBehaviour {
 		b.size = new Vector3 (tt.mainTexture.width, tt.mainTexture.height, 1);
 		
 		gameObject.AddComponent <DragableObject1> ();
+
 	}
 
 	

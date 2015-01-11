@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Pathfinding.Serialization.JsonFx;
 
 public class DrawPanelHandler : MonoBehaviour {
+	const float COPY_X = 64;
+	const float COPY_Y = 64;
 
 	public static DrawPanelHandler Instance;
 
@@ -60,7 +62,7 @@ public class DrawPanelHandler : MonoBehaviour {
 
 					Tile tile = CopiedGridTile.tile.Copy ();
 					Vector3 oldpos = CopiedGridTile.transform.localPosition;
-					Vector3 newpos = new Vector3 (oldpos.x+16, oldpos.y+16, oldpos.z);
+					Vector3 newpos = new Vector3 (oldpos.x+COPY_X, oldpos.y+COPY_Y, oldpos.z);
 					int newTileId = Ultil.GetNewObjId ();
 					//TileHandler tilehandler = ToolboxHandler.Instance.GetTileHandler (tile.typeId);
 
@@ -234,6 +236,7 @@ public class DrawPanelHandler : MonoBehaviour {
 			gt.gameObject.GetComponent <EventTransfer>().onScroll = this.OnScroll;
 			gt.gameObject.GetComponent <EventTransfer>().onPress = this.GetComponent<DragableCamera>().OnPress;
 			gt.gameObject.GetComponent <EventTransfer>().onDrag = this.GetComponent<DragableCamera>().OnDrag;
+
 
 			GridLayerHandler l = gameObject.GetComponent<DrawPanelHandler>().dictLayers[layerId];
 			

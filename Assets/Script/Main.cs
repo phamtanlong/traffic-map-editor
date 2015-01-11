@@ -76,11 +76,11 @@ public class Main : MonoBehaviour {
 					Global.currentTile = t;
 					GridTileHandler gt = DrawPanelHandler.Instance.AddNewObject (v, t.objId, t, layerId);
 					gt.tile = t.Copy ();
-
+					
 					UITexture tt = gt.GetComponent<UITexture> ();
 					tt.width = (int)t.w;
 					tt.height = (int)t.h;
-
+			
 					BoxCollider box = gt.GetComponent<BoxCollider> ();
 					box.size = new Vector3 (tt.width, tt.height, 0);
 
@@ -88,28 +88,6 @@ public class Main : MonoBehaviour {
 						maxId = t.objId;
 
 						Ultil.ResetObjId (maxId);
-					}
-
-					//AutoCar
-					if (t.typeId == 310) {
-						string chieu = Ultil.GetString (TileKey.AUTOCAR_DIR, "UP", t.properties);
-						switch (chieu) {
-						case "UP":
-							gt.transform.localEulerAngles = new Vector3(0, 0, 0);
-							break;
-							
-						case "DOWN":
-							gt.transform.localEulerAngles = new Vector3(0, 0, 180);
-							break;
-							
-						case "LEFT":
-							gt.transform.localEulerAngles = new Vector3(0, 0, 90);
-							break;
-							
-						case "RIGHT":
-							gt.transform.localEulerAngles = new Vector3(0, 0, -90);
-							break;
-						}
 					}
 				}
 			}

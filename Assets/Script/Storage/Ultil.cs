@@ -63,6 +63,8 @@ public class Ultil {
 
 	public static void InitDefaultValue (Tile tile) {
 
+		//---------------- ROAD -------------------
+
 		if (tile.layerType == LayerType.Road) {
 			//Velocity
 			Ultil.GetString (TileKey.MIN_VEL, "0", tile.properties);
@@ -100,8 +102,13 @@ public class Ultil {
 
 			}
 		}
-	}
 
+		//------------------ AUTO_CAR --------------------
+		if (tile.typeId == TileID.AUTOCAR || tile.typeId == TileID.AUTOBIKE) {
+			//Direction
+			Ultil.GetString (TileKey.AUTOCAR_DIR, "UP", tile.properties);
+		}
+	}
 }
 
 

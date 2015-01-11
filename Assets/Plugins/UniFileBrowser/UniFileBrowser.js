@@ -9,8 +9,6 @@ import System.Collections.Generic;
 
 class UniFileBrowser extends MonoBehaviour {
 
-#if !UNITY_WEBPLAYER
-
 var filterFiles = false;			// Filter file names by the items in the filterFileExtensions array
 var filterFileExtensions : String[];// When filterFiles is true, show only the files with these extensions
 var autoAddExtension = false;		// When saving, automatically add this extension to file names
@@ -128,6 +126,22 @@ private var buttonPositionX : int;
 private var buttonPositionY : int;
 private var multi : boolean;
 private var windowOffset : int;
+
+class RefBool {
+	var b : boolean;
+	function RefBool (b : boolean) {
+		this.b = b;
+	}
+}
+
+class RefInt {
+	var i : int;
+	function RefInt (i : int) {
+		this.i = i;
+	}
+}
+
+#if !UNITY_WEBPLAYER
 
 #if UNITY_EDITOR
 function Reset () {
@@ -1165,20 +1179,6 @@ private function SelectFile () : IEnumerator {
 	}
 	
 	selectFileInProgress = false;
-}
-
-class RefBool {
-	var b : boolean;
-	function RefBool (b : boolean) {
-		this.b = b;
-	}
-}
-
-class RefInt {
-	var i : int;
-	function RefInt (i : int) {
-		this.i = i;
-	}
 }
 
 class Popup {

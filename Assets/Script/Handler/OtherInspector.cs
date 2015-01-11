@@ -4,13 +4,13 @@ using System.Collections;
 public class OtherInspector : IInspector {
 	
 	public LightInspector lightInspector;
-	public AutoCarInspector autoCarInspector;
+	//public AutoCarInspector autoCarInspector;
 
 	private IInspector currentInspector;
 
 	void Start () {
 		lightInspector.gameObject.SetActive (false);
-		autoCarInspector.gameObject.SetActive (false);
+		//autoCarInspector.gameObject.SetActive (false);
 	}
 
 	void Update () {}
@@ -39,7 +39,11 @@ public class OtherInspector : IInspector {
 			break;
 
 		case 310:
-			currentInspector = autoCarInspector;
+			//currentInspector = autoCarInspector;
+			break;
+			
+		case 311:
+			//currentInspector = autoCarInspector;
 			break;
 		}
 

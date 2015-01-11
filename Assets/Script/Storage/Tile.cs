@@ -45,6 +45,9 @@ public struct TileID {
 	public const int ROAD_LEFT = 2;
 	public const int ROAD_RIGHT = 3;
 	public const int ROAD_UP = 4;
+
+	public const int AUTOCAR = 310;
+	public const int AUTOBIKE = 311;
 }
 
 
