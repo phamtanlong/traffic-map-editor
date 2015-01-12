@@ -48,7 +48,7 @@ public class InspectorHandler : MonoBehaviour {
 
 		switch (t.tile.layerType) {
 		case LayerType.Road:
-			if (t.tile.typeId >= TileID.ROAD_DOWN && t.tile.typeId <= TileID.ROAD_UP) {
+			if (t.tile.typeId >= TileID.ROAD_DOWN && t.tile.typeId <= TileID.ROAD_NONE) {
 				currentInspector = roadInspector;
 			}
 			break;
