@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.IO;
 using Pathfinding.Serialization.JsonFx;
@@ -132,9 +133,13 @@ public class MenuHandler : MonoBehaviour {
 		Main.Instance.log.text = pathToFile;
 
 		string s = Main.Instance.Export ();
-		File.WriteAllText (pathToFile, s);
-
-		Main.Instance.log.text = "Write completed!";
+		try {
+			File.WriteAllText (pathToFile, s);
+			Main.Instance.log.text = "Write completed!";
+		} catch (Exception e) {
+			Main.Instance.log.text = "Can not save file!";
+			DialogHandler.Instance.ShowDialogMessageOK ("Error", "Can not save file\nPlease:\n- Save with new file's name.\n- Save to another place.", null); 
+		}
 	}
 	
 	private void SaveFileCallbackAndQuit (string pathToFile) {
