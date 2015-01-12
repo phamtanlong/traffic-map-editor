@@ -4,8 +4,8 @@
 
 
 var config = {
-	width: 1136, 
-	height: 700,
+	width: 1200, 
+	height: 640,
 	params: { 
 		enableDebugging:"0",
 		backgroundcolor: "6f6f6f",
